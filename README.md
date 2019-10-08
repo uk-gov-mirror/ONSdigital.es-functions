@@ -46,6 +46,7 @@ message_dataframe = pd.DataFrame(message_json)
 ```
 [Back to top](#top)
 <hr>
+
 ## Read Dataframe from s3 <a name='readdataframefroms3'>
 Given the name of the bucket and the filename(key), this function will
 return contents of a file. File is Dataframe format.
@@ -80,6 +81,7 @@ funk.save_to_s3(bucket_name, file_name, data)
 ```
 [Back to top](#top)
 <hr>
+
 ## Send sqs message <a name='sendsqsmessage'>
 This method is responsible for sending data to an SQS queue.
 
@@ -103,6 +105,7 @@ funk.send_sqs_message(queue_url, json_response, "Strata")
 ```
 [Back to top](#top)
 <hr>
+
 ## Send sns message <a name='sendsnsmessage'>
 This method is responsible for sending a notification to the specified arn, so that it can be used to relay information for the BPM to use and handle.
 
@@ -120,6 +123,7 @@ funk.send_sns_message(checkpoint, arn, "Strata")
 ```
 [Back to top](#top)
 <hr>
+
 ## Send sns message with anomalies <a name='sendsnmessageanomalies'>
 This method is responsible for sending a notification to the specified arn, so that it can be used to relay information for the BPM to use and handle.<br><br>
 This version of the send to sns is used by modules that also send a report of data anomalies
@@ -139,6 +143,7 @@ funk.send_sns_message_with_anomalies(checkpoint, anomalies, arn, "Enrichment")
 ```
 [Back to top](#top)
 <hr>
+
 ## Get sqs message <a name='getsqsmessage'>
 This method retrieves the data from the specified SQS queue.
 
@@ -154,6 +159,7 @@ response = funk.get_sqs_message(queue_url)
 ```
 [Back to top](#top)
 <hr>
+
 ### Save Data <a name='savedata'>
 Save data function stores data in s3 and passes the bucket & filename onto sqs queue. SQS only supports message length of 256k, so this function is to be used instead of send_sqs_message when the data size approaches this figure. Used in conjunction with get_data.
 
@@ -174,6 +180,7 @@ funk.save_data(bucket_name, file_name, str(final_output), queue_url, sqs_message
 ```
 [Back to top](#top)
 <hr>
+
 ### Get Data <a name='getdata'>
 Get data function recieves a message from an sqs queue, extracts the bucket and filename, then uses them to get the file from s3. If no messages are in the queue, or if the message does not come from the preceding module, the bucket_name and key given as parameters are used instead.
 <br><br>
