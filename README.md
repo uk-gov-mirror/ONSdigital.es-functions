@@ -7,7 +7,9 @@ from esawsfunctions import funk
 data = funk.read_from_s3("MyBucketName", "MyFileName")
 ```
 <br>
+  
 ### Contents:
+
 [No data in queue error](#nodatainqueue)<br>
 [Read from s3](#readfroms3)<br>
 [Read dataframe from s3](#readdataframefroms3)<br>
@@ -21,8 +23,10 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 <br>
 ## Class NoDataInQueueError  <a name='nodatainqueue'>
 Custom exception thrown when response does not contain any messages.
+  
 [Back to top](#top)
 <hr>
+  
 ## Read From s3 <a name='readfroms3'>
 Given the name of the bucket and the filename(key), this function will
 return a file. File is JSON format.
