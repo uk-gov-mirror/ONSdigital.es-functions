@@ -123,7 +123,7 @@ def get_sqs_message(queue_url):
     :return: Messages from queue - Type: json string
     """
     sqs = boto3.client('sqs', region_name="eu-west-2")
-    return sqs.receive_message(QueueUrl=queue_url)
+    return sqs.receive_message(QueueUrl=queue_url, AttributeNames=['MessageGroupId'])
 
 
 def save_data(bucket_name, file_name, data, queue_url, message_id):
