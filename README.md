@@ -1,3 +1,4 @@
+
 # es-aws-functions <a name='top'>
 Common functions used by the econstats results process.
 <br>
@@ -20,6 +21,7 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 [Get sqs message](#getsqsmessage)<br>
 [Save Data](#savedata)<br>
 [Get Data](#getdata)<br>
+[Automated Deployment](#autodeploy)<br>
 <br>
 ## Class NoDataInQueueError  <a name='nodatainqueue'>
 Custom exception thrown when response does not contain any messages.
@@ -205,4 +207,13 @@ message_json, receipt_handle = funk.get_data(queue_url, bucket_name, "enrichment
 ```
 <hr>
 
+[Back to top](#top)
+
+## Automated Deployment <a name='autodeploy'>
+This project can be automatically deployed via docker and serverless framework. To do so, follow:<br>
+```
+./do.sh build
+aws-vault exec serverless -- ./do.sh deploy
+```
+You will need the correct credentials stored in aws vault so that this works.
 [Back to top](#top)
