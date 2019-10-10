@@ -60,7 +60,7 @@ def send_sqs_message(queue_url, message, output_message_id):
     :param queue_url: The url of the SQS queue. - Type: String
     :param message: The message/data you wish to send to the SQS queue - Type: String
     :param output_message_id: The label of the record in the SQS queue - Type: String
-    :return: None
+    :return: Json string containing metadata about the message.
     """
     # MessageDeduplicationId is set to a random hash to overcome de-duplication,
     # otherwise modules could not be re-run in the space of 5 Minutes.
@@ -81,7 +81,7 @@ def send_sns_message(checkpoint, sns_topic_arn, module_name):
     :param module_name: The name of the module currently being run - Type: String.
     :param sns_topic_arn: The arn of the sns topic you are directing the message at -
                           Type: String.
-    :return: None
+    :return: Json string containing metadata about the message.
     """
     sns = boto3.client("sns", region_name="eu-west-2")
     sns_message = {

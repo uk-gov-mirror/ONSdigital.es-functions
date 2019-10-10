@@ -42,8 +42,9 @@ input_file: The JSON file in S3 - Type: String
 
 ### Usage:
 ```
-data = funk.read_from_s3("MyBucketName", "MyFileName")
-message_json = json.loads(message_json)
+data = funk.read_from_s3(bucket_name, file_name)
+#Note that this function returns the data as a string. To use further might require below steps
+message_json = json.loads(data)
 message_dataframe = pd.DataFrame(message_json)
 ```
 [Back to top](#top)
@@ -62,7 +63,7 @@ input_file: The JSON file in S3 - Type: String
 
 ### Usage:
 ```
-data_dataframe = funk.read_dataframe_from_s3("MyBucketName", "MyFileName")
+data_dataframe = funk.read_dataframe_from_s3(bucket_name, file_name)
 ```
 [Back to top](#top)
 <hr>
@@ -114,8 +115,8 @@ This method is responsible for sending a notification to the specified arn, so t
 
 ### Parameters:
 checkpoint: The current checkpoint location - Type: String.<br>
-module_name: The name of the module currently being run - Type: String.<br>
 sns_topic_arn: The arn of the sns topic you are directing the message at - Type: String.<br>
+module_name: The name of the module currently being run - Type: String.<br>
 
 ### Return:
 Json string containing metadata about the message.
@@ -171,7 +172,7 @@ bucket_name: The name of the s3 bucket to use to save data - Type: String<br>
 file_name: The name to give the file being saved - Type: String<br>
 data: The data to be saved - Type Json string<br>
 queue_url: The url of the queue to use in sending the file details - Type: String<br>
-message_id: The label of the message sent to sqs(Message_group_id, what module sent the message) - Type: String<br>
+message_id: The label of the message sent to sqs(Message_group_id, what module sent the message) - Type: String (example: enrichmentOut)<br>
 
 ### Return:
 Nothing
@@ -192,13 +193,13 @@ SQS only supports message length of 256k, so this function is to be used instead
 Data is returned as a json string. To use as dataframe you will need to json.loads and pd.dataframe() the response.
 
 ### Parameters: 
-queue_url: The url of the queue to retrieve message from - Type: String
-bucket_name: The default bucket name to use if no message from previous module - Type: String
-key: The default file name to use if no message from the previous module - Type: String
-incoming_message_group: The name of the message group from previous module - Type: String
+queue_url: The url of the queue to retrieve message from - Type: String<br>
+bucket_name: The default bucket name to use if no message from previous module - Type: String<br>
+key: The default file name to use if no message from the previous module - Type: String<br>
+incoming_message_group: The name of the message group from previous module - Type: String (example: enrichmentOut)<br>
 
 ### Returns:
-data: The data from s3 - Type: Json
+data: The data from s3 - Type: Json<br>
 receipt_handle: The receipt_handle of the incoming message(used to delete old message) - Type: String
 
 ### Usage:
