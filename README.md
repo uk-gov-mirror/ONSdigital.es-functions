@@ -22,6 +22,7 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 [Save Data](#savedata)<br>
 [Get Data](#getdata)<br>
 [Get dataframe](#getdataframe)<br>
+[Delete data](#deletedata)<br>
 [Automated Deployment](#autodeploy)<br>
 <br>
 ## Class NoDataInQueueError  <a name='nodatainqueue'>
@@ -233,6 +234,27 @@ output_Dataframe, receipt_handle = funk.get_dataframe(queue_url, bucket_name, "e
 <hr>
 
 [Back to top](#top)
+
+## Delete from S3 <a name='deletedata'>
+Given the name of the bucket and the filename(key), this function will
+delete a file in any format. Performs check if file exists, else return
+error.
+
+### Parameters:
+bucket_name: Name of the S3 bucket - Type: String <br>
+file_name: Name of the file - Type: String
+
+### Return:
+Success or error message - Type: String
+
+### Usage:
+```
+# Stored in variable to retrieve returned success/error message,
+# to be passed to the logger.
+delete = funk.delete_data(bucket_name, file_name)
+```
+[Back to top](#top)
+<hr>
 
 ## Automated Deployment <a name='autodeploy'>
 This project can be automatically deployed via docker and serverless framework. To do so, follow:<br>

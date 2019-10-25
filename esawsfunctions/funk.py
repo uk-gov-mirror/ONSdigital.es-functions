@@ -4,6 +4,7 @@ import ast
 
 import boto3
 import pandas as pd
+from botocore.exceptions import ClientError
 
 
 class NoDataInQueueError(Exception):
@@ -225,3 +226,22 @@ def get_dataframe(queue_url, bucket_name, key, incoming_message_group):
     json_data = ast.literal_eval(data)
     data = pd.DataFrame(json_data)
     return data, receipt_handle
+
+
+def delete_data(bucket_name, file_name):
+    """
+    Deletes specified file from specified S3 bucket.
+    Checks if file exists before deletion.
+    If file does not exist, return error message.
+
+    :param bucket_name: The name of the bucket containing the file - Type: String
+    :param file_name: The name of the file being deleted - Type: String
+    :return: None
+    """
+    s3 = boto3.resource('s3', region_name='eu-west-2')
+    try:
+        s3.Object(bucket_name, file_name).load()
+        s3.Object(bucket_name, file_name).delete()
+        return "Succesfully deleted file from S3 bucket."
+    except ClientError:
+        return "File does not exist in specified bucket!"
