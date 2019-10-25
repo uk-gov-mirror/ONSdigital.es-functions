@@ -1,5 +1,6 @@
 import json
 import random
+import ast
 
 import boto3
 import pandas as pd
@@ -192,4 +193,35 @@ def get_data(queue_url, bucket_name, key, incoming_message_group):
         bucket = message["bucket"]
         key = message["key"]
     data = read_from_s3(bucket, key)
+    return data, receipt_handle
+
+
+def get_dataframe(queue_url, bucket_name, key, incoming_message_group):
+    """
+    Get data function recieves a message from an sqs queue,
+    extracts the bucket and filename, then uses them to get the file from s3.
+    If no messages are in the queue, or if the message does not come
+    from the preceding module, the bucket_name and key given as parameters are used
+    instead.
+
+    SQS only supports message length of 256k, so this function is to be used instead of
+    get_sqs_message when the data size approaches this figure. Used in conjunction with
+    save_data
+
+    Data is returned as a DataFrame.
+
+    :param queue_url: The url of the queue to retrieve message from - Type: String
+    :param bucket_name: The default bucket name to use if no message from previous
+    module - Type: String
+    :param key: The default file name to use if no message from the previous
+    module - Type: String
+    :param incoming_message_group: The name of the message group from previous
+    module - Type: String
+    :return data: The data from s3 - Type: DataFrame
+    :return receipt_handle: The receipt_handle of the incoming message
+    (used to delete old message) - Type: String
+    """
+    data, receipt_handle = get_data(queue_url, bucket_name, key, incoming_message_group)
+    json_data = ast.literal_eval(data)
+    data = pd.DataFrame(json_data)
     return data, receipt_handle
