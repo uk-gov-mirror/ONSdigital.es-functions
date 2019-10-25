@@ -21,6 +21,7 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 [Get sqs message](#getsqsmessage)<br>
 [Save Data](#savedata)<br>
 [Get Data](#getdata)<br>
+[Get dataframe](#getdataframe)<br>
 [Automated Deployment](#autodeploy)<br>
 <br>
 ## Class NoDataInQueueError  <a name='nodatainqueue'>
@@ -205,6 +206,28 @@ receipt_handle: The receipt_handle of the incoming message(used to delete old me
 ### Usage:
 ```
 message_json, receipt_handle = funk.get_data(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
+```
+<hr>
+### Get DataFrame <a name='getdataFrame'>
+Get data function recieves a message from an sqs queue, extracts the bucket and filename, then uses them to get the file from s3. If no messages are in the queue, or if the message does not come from the preceding module, the bucket_name and key given as parameters are used instead.
+<br><br>
+SQS only supports message length of 256k, so this function is to be used instead of get_sqs_message when the data size approaches this figure. Used in conjunction with save_data.<br><br>
+
+Data is returned as a DataFrame.
+
+### Parameters: 
+queue_url: The url of the queue to retrieve message from - Type: String<br>
+bucket_name: The default bucket name to use if no message from previous module - Type: String<br>
+key: The default file name to use if no message from the previous module - Type: String<br>
+incoming_message_group: The name of the message group from previous module - Type: String (example: enrichmentOut)<br>
+
+### Returns:
+data: The data from s3 - Type: DataFrame<br>
+receipt_handle: The receipt_handle of the incoming message(used to delete old message) - Type: String
+
+### Usage:
+```
+output_Dataframe, receipt_handle = funk.get_dataframe(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
 ```
 <hr>
 
