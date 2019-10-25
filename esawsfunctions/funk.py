@@ -236,7 +236,7 @@ def delete_data(bucket_name, file_name):
 
     :param bucket_name: The name of the bucket containing the file - Type: String
     :param file_name: The name of the file being deleted - Type: String
-    :return: None
+    :return: Success or error message - Type: String
     """
     s3 = boto3.resource('s3', region_name='eu-west-2')
     try:
