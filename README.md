@@ -208,6 +208,7 @@ receipt_handle: The receipt_handle of the incoming message(used to delete old me
 message_json, receipt_handle = funk.get_data(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
 ```
 <hr>
+
 ### Get DataFrame <a name='getdataFrame'>
 Get data function recieves a message from an sqs queue, extracts the bucket and filename, then uses them to get the file from s3. If no messages are in the queue, or if the message does not come from the preceding module, the bucket_name and key given as parameters are used instead.
 <br><br>
