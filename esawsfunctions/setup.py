@@ -1,5 +1,5 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 setup(name='esawsfunctions',
       version='1.0',
-      py_modules=['funk','test'],
+      packages=find_packages(),
       )
