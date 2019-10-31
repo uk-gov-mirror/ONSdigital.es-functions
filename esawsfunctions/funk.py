@@ -123,7 +123,8 @@ def get_sqs_message(queue_url, max_number_of_messages=1):
     """
     This method retrieves the data from the specified SQS queue.
     :param queue_url: The url of the SQS queue. - Type: String
-    :param max_number_of_messages: Number of messages to pick up from queue(default 1) - Type: Int
+    :param max_number_of_messages: Number of messages to pick up from queue(default 1)
+     - Type: Int
     :return: Messages from queue - Type: json string
     """
     sqs = boto3.client("sqs", region_name="eu-west-2")
