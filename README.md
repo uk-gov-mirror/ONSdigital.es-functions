@@ -151,10 +151,11 @@ funk.send_sns_message_with_anomalies(checkpoint, anomalies, arn, "Enrichment")
 <hr>
 
 ## Get sqs message <a name='getsqsmessage'>
-This method retrieves the data from the specified SQS queue.
+This method retrieves the data from the specified SQS queue. <br><br>There is a requirement from the combiner module for the ability to retrieve up to 3 messages from the queue. If such capability is needed, then include the number as the second parameter. There is no need if you only require one message because of a default.
 
 ### Parameters: 
-queue_url: The url of the SQS queue.
+queue_url: The url of the SQS queue.<br>
+max_number_of_messages: Number of messages to pick up from queue(default 1) - Type: Int
 
 ### Returns:
 Messages from queue - Type: json string
@@ -162,6 +163,10 @@ Messages from queue - Type: json string
 ### Usage:
 ```
 response = funk.get_sqs_message(queue_url)
+-------
+or
+-------
+responses = funk.get_sqs_message(queue_url, 3)
 ```
 [Back to top](#top)
 <hr>
