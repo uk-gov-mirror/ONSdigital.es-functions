@@ -119,14 +119,17 @@ def send_sns_message_with_anomalies(checkpoint, anomalies, sns_topic_arn, module
     sns.publish(TargetArn=sns_topic_arn, Message=json.dumps(sns_message))
 
 
-def get_sqs_message(queue_url):
+def get_sqs_message(queue_url, max_number_of_messages=1):
     """
     This method retrieves the data from the specified SQS queue.
-    :param queue_url: The url of the SQS queue.
+    :param queue_url: The url of the SQS queue. - Type: String
+    :param max_number_of_messages: Number of messages to pick up from queue(default 1)
+     - Type: Int
     :return: Messages from queue - Type: json string
     """
     sqs = boto3.client("sqs", region_name="eu-west-2")
-    return sqs.receive_message(QueueUrl=queue_url, AttributeNames=["MessageGroupId"])
+    return sqs.receive_message(QueueUrl=queue_url, AttributeNames=["MessageGroupId"],
+                               MaxNumberOfMessages=max_number_of_messages)
 
 
 def save_data(bucket_name, file_name, data, queue_url, message_id):
