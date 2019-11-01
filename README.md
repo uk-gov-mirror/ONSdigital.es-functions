@@ -15,10 +15,11 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 [Read from s3](#readfroms3)<br>
 [Read dataframe from s3](#readdataframefroms3)<br>
 [Save to s3](#savetos3)<br>
+[Write Dataframe to csv](#savetocsv)<br>
 [Send sqs message](#sendsqsmessage)<br>
-[Send sns message](#sendsnsmessage)<br>
 [Send sns message with anomalies](#sendsnmessageanomalies)<br>
 [Get sqs message](#getsqsmessage)<br>
+[Get sns message](#getsnsmessage)<br>
 [Save Data](#savedata)<br>
 [Get Data](#getdata)<br>
 [Get dataframe](#getdataframe)<br>
@@ -86,6 +87,25 @@ Nothing
 funk.save_to_s3(bucket_name, file_name, data)
 ```
 [Back to top](#top)
+<hr>
+
+## Write DataFrame to csv <a name='savetocsv'>
+This function takes a Dataframe and stores it in a specific bucket.<br>
+
+### Parameters:
+Dataframe: The Dataframe you wish to save - Type: Dataframe.<br>
+Bucket_name: Name of the bucket you wish to save the csv into - Type: String.<br>
+Output_data: Filename: The name given to the CSV - Type: String.<br>
+
+### Return:
+Nothing
+
+### Usage:
+```
+funk.write_dataframe_to_csv(dataframe, bucket_name, filename)
+```
+[Back to top](#top)
+
 <hr>
 
 ## Send sqs message <a name='sendsqsmessage'>
@@ -189,6 +209,7 @@ Nothing
 final_output = json.loads(json_response)
 funk.save_data(bucket_name, file_name, str(final_output), queue_url, sqs_messageid_name)
 ```
+
 [Back to top](#top)
 <hr>
 

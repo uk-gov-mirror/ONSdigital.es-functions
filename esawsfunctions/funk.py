@@ -59,8 +59,8 @@ def save_to_s3(bucket_name, output_file_name, output_data):
 
 def write_dataframe_to_csv(dataframe, bucket_name, filename):
     """
-    This function takes a dataframe and stores it in a specificed bucket with the given name.
-    :param dataframe: Name of the dataframe you wish to save - Type: Dataframe.
+    This function takes a Dataframe and stores it in a specific bucket.
+    :param dataframe: The Dataframe you wish to save - Type: Dataframe.
     :param bucket_name: Name of the bucket you wish to save the csv into - Type: String.
     :param filename: The name given to the CSV - Type: String.
     :return: None
