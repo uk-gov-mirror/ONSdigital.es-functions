@@ -1,6 +1,7 @@
 import json
 import random
 import ast
+from io import StringIO
 
 import boto3
 import pandas as pd
@@ -54,6 +55,20 @@ def save_to_s3(bucket_name, output_file_name, output_data):
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
     s3.Object(bucket_name, output_file_name).put(Body=output_data)
+
+
+def write_dataframe_to_csv(dataframe, bucket_name, filename):
+    """
+    This function takes a dataframe and stores it in a specificed bucket with the given name.
+    :param dataframe: Name of the dataframe you wish to save - Type: Dataframe.
+    :param bucket_name: Name of the bucket you wish to save the csv into - Type: String.
+    :param filename: The name given to the CSV - Type: String.
+    :return: None
+    """
+    csv_buffer = StringIO()
+    dataframe.to_csv(csv_buffer, sep=",", index=False)
+    s3_resource = boto3.resource("s3")
+    s3_resource.Object(bucket_name, filename).put(Body=csv_buffer.getvalue())
 
 
 def send_sqs_message(queue_url, message, output_message_id):
