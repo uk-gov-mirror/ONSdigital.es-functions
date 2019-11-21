@@ -1,6 +1,5 @@
 import json
 import random
-import ast
 from io import StringIO
 
 import boto3
