@@ -62,7 +62,8 @@ def save_to_s3(bucket_name, output_file_name, output_data):
     :return: None
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
-    s3.Object(bucket_name, output_file_name).put(Body=output_data, ContentType='application/json')
+    s3.Object(bucket_name, output_file_name).put(Body=output_data,
+                                                 ContentType='application/json')
 
 
 def write_dataframe_to_csv(dataframe, bucket_name, filename):
@@ -76,7 +77,8 @@ def write_dataframe_to_csv(dataframe, bucket_name, filename):
     csv_buffer = StringIO()
     dataframe.to_csv(csv_buffer, sep=",", index=False)
     s3_resource = boto3.resource("s3")
-    s3_resource.Object(bucket_name, filename).put(Body=csv_buffer.getvalue(), ContentType='text/plain')
+    s3_resource.Object(bucket_name, filename).put(Body=csv_buffer.getvalue(),
+                                                  ContentType='text/plain')
 
 
 def send_sqs_message(queue_url, message, output_message_id):
