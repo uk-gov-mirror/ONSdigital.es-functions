@@ -17,6 +17,14 @@ class NoDataInQueueError(Exception):
     pass
 
 
+class MethodFailure(Exception):
+    """
+    Custom exception signifying that the method has encountered an exception.
+    """
+    def __init__(self, message):
+        self.error_message = message
+
+
 def read_from_s3(bucket_name, file_name):
     """
     Given the name of the bucket and the filename(key), this function will
