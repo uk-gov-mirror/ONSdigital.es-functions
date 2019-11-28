@@ -11,19 +11,20 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
   
 ### Contents:
 
-[No data in queue error](#nodatainqueue)<br>
-[Read from s3](#readfroms3)<br>
-[Read dataframe from s3](#readdataframefroms3)<br>
-[Save to s3](#savetos3)<br>
-[Write Dataframe to csv](#savetocsv)<br>
-[Send sqs message](#sendsqsmessage)<br>
-[Send sns message with anomalies](#sendsnmessageanomalies)<br>
-[Get sqs message](#getsqsmessage)<br>
-[Get sns message](#getsnsmessage)<br>
+[No Data In Queue Error](#nodatainqueue)<br>
+[Method Failure](#methodfailure)<br>
+[Read From S3](#readfroms3)<br>
+[Read DataFrame From S3](#readdataframefroms3)<br>
+[Save To S3](#savetos3)<br>
+[Write Dataframe To CSV](#savetocsv)<br>
+[Send SQS Message](#sendsqsmessage)<br>
+[Send SNS Message With Anomalies](#sendsnmessageanomalies)<br>
+[Get SQS Message](#getsqsmessage)<br>
+[Get SNS Message](#getsnsmessage)<br>
 [Save Data](#savedata)<br>
 [Get Data](#getdata)<br>
-[Get dataframe](#getdataframe)<br>
-[Delete data](#deletedata)<br>
+[Get DataFrame](#getdataframe)<br>
+[Delete Data](#deletedata)<br>
 [Automated Deployment](#autodeploy)<br>
 <br>
 ## Class NoDataInQueueError  <a name='nodatainqueue'>
@@ -31,7 +32,28 @@ Custom exception thrown when response does not contain any messages.
   
 [Back to top](#top)
 <hr>
+
+## Class MethodFailure  <a name='methodfailure'>
+Custom exception thrown when the method has encountered an exception.
   
+### Parameters:
+It expects to be passed the error message from the method.
+
+### Usage:
+```
+if str(type(json_response)) != "<class 'str'>":
+    raise funk.MethodFailure(json_response['error'])
+```
+
+```
+except funk.MethodFailure as e:
+    error_message = e.error_message
+    log_message = "Error in " + method_name + "."
+```
+  
+[Back to top](#top)
+<hr>
+
 ## Read From s3 <a name='readfroms3'>
 Given the name of the bucket and the filename(key), this function will
 return a file. File is JSON format.
@@ -236,7 +258,7 @@ message_json, receipt_handle = funk.get_data(queue_url, bucket_name, "enrichment
 ```
 <hr>
 
-### Get DataFrame <a name='getdataFrame'>
+### Get DataFrame <a name='getdataframe'>
 Get data function recieves a message from an sqs queue, extracts the bucket and filename, then uses them to get the file from s3. If no messages are in the queue, or if the message does not come from the preceding module, the bucket_name and key given as parameters are used instead.
 <br><br>
 SQS only supports message length of 256k, so this function is to be used instead of get_sqs_message when the data size approaches this figure. Used in conjunction with save_data.<br><br>
