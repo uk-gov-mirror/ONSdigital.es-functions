@@ -18,7 +18,7 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 [Save To S3](#savetos3)<br>
 [Write Dataframe To CSV](#savetocsv)<br>
 [Send SQS Message](#sendsqsmessage)<br>
-[Send SNS Message With Anomalies](#sendsnmessageanomalies)<br>
+[Send SNS Message With Anomalies](#sendsnmessage)<br>
 [Get SQS Message](#getsqsmessage)<br>
 [Get SNS Message](#getsnsmessage)<br>
 [Save Data](#savedata)<br>
@@ -213,7 +213,7 @@ responses = funk.get_sqs_message(queue_url, 3)
 [Back to top](#top)
 <hr>
 
-### Save Data <a name='savedata'>
+## Save Data <a name='savedata'>
 Save data function stores data in s3 and passes the bucket & filename onto sqs queue. SQS only supports message length of 256k, so this function is to be used instead of send_sqs_message when the data size approaches this figure. Used in conjunction with get_data.
 
 ### Parameters:
@@ -235,7 +235,7 @@ funk.save_data(bucket_name, file_name, str(final_output), queue_url, sqs_message
 [Back to top](#top)
 <hr>
 
-### Get Data <a name='getdata'>
+## Get Data <a name='getdata'>
 Get data function recieves a message from an sqs queue, extracts the bucket and filename, then uses them to get the file from s3. If no messages are in the queue, or if the message does not come from the preceding module, the bucket_name and key given as parameters are used instead.
 <br><br>
 SQS only supports message length of 256k, so this function is to be used instead of get_sqs_message when the data size approaches this figure. Used in conjunction with save_data.<br><br>
@@ -256,9 +256,10 @@ receipt_handle: The receipt_handle of the incoming message(used to delete old me
 ```
 message_json, receipt_handle = funk.get_data(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
 ```
+[Back to top](#top)
 <hr>
 
-### Get DataFrame <a name='getdataframe'>
+## Get DataFrame <a name='getdataframe'>
 Get data function recieves a message from an sqs queue, extracts the bucket and filename, then uses them to get the file from s3. If no messages are in the queue, or if the message does not come from the preceding module, the bucket_name and key given as parameters are used instead.
 <br><br>
 SQS only supports message length of 256k, so this function is to be used instead of get_sqs_message when the data size approaches this figure. Used in conjunction with save_data.<br><br>
@@ -311,4 +312,6 @@ This project can be automatically deployed via docker and serverless framework. 
 aws-vault exec serverless -- ./do.sh deploy
 ```
 You will need the correct credentials stored in aws vault so that this works.
+
 [Back to top](#top)
+<hr>
