@@ -18,9 +18,9 @@ data = funk.read_from_s3("MyBucketName", "MyFileName")
 [Save To S3](#savetos3)<br>
 [Write Dataframe To CSV](#savetocsv)<br>
 [Send SQS Message](#sendsqsmessage)<br>
-[Send SNS Message With Anomalies](#sendsnmessage)<br>
+[Send SNS Message](#sendsnsmessage)<br>
+[Send SNS Message With Anomalies](#sendsnsmessageanomalies)<br>
 [Get SQS Message](#getsqsmessage)<br>
-[Get SNS Message](#getsnsmessage)<br>
 [Save Data](#savedata)<br>
 [Get Data](#getdata)<br>
 [Get DataFrame](#getdataframe)<br>
@@ -54,7 +54,7 @@ except funk.MethodFailure as e:
 [Back to top](#top)
 <hr>
 
-## Read From s3 <a name='readfroms3'>
+## Read From S3 <a name='readfroms3'>
 Given the name of the bucket and the filename(key), this function will
 return a file. File is JSON format.
 
@@ -75,7 +75,7 @@ message_dataframe = pd.DataFrame(message_json)
 [Back to top](#top)
 <hr>
 
-## Read Dataframe from s3 <a name='readdataframefroms3'>
+## Read DataFrame From S3 <a name='readdataframefroms3'>
 Given the name of the bucket and the filename(key), this function will
 return contents of a file. File is Dataframe format.
 
@@ -93,7 +93,7 @@ data_dataframe = funk.read_dataframe_from_s3(bucket_name, file_name)
 [Back to top](#top)
 <hr>
 
-## Save to s3 <a name='savetos3'>
+## Save To S3 <a name='savetos3'>
 This function uploads a specified set of data to the s3 bucket under the given name.<br>
 
 ### Parameters:
@@ -111,7 +111,7 @@ funk.save_to_s3(bucket_name, file_name, data)
 [Back to top](#top)
 <hr>
 
-## Write DataFrame to csv <a name='savetocsv'>
+## Write DataFrame To CSV <a name='savetocsv'>
 This function takes a Dataframe and stores it in a specific bucket.<br>
 
 ### Parameters:
@@ -130,7 +130,7 @@ funk.write_dataframe_to_csv(dataframe, bucket_name, filename)
 
 <hr>
 
-## Send sqs message <a name='sendsqsmessage'>
+## Send SQS Message <a name='sendsqsmessage'>
 This method is responsible for sending data to an SQS queue.
 
 ### Parameters: 
@@ -154,7 +154,7 @@ funk.send_sqs_message(queue_url, json_response, "Strata")
 [Back to top](#top)
 <hr>
 
-## Send sns message <a name='sendsnsmessage'>
+## Send SNS Message <a name='sendsnsmessage'>
 This method is responsible for sending a notification to the specified arn, so that it can be used to relay information for the BPM to use and handle.
 
 ### Parameters:
@@ -172,7 +172,7 @@ funk.send_sns_message(checkpoint, arn, "Strata")
 [Back to top](#top)
 <hr>
 
-## Send sns message with anomalies <a name='sendsnmessageanomalies'>
+## Send SNS Message With Anomalies <a name='sendsnmessageanomalies'>
 This method is responsible for sending a notification to the specified arn, so that it can be used to relay information for the BPM to use and handle.<br><br>
 This version of the send to sns is used by modules that also send a report of data anomalies
 
@@ -192,7 +192,7 @@ funk.send_sns_message_with_anomalies(checkpoint, anomalies, arn, "Enrichment")
 [Back to top](#top)
 <hr>
 
-## Get sqs message <a name='getsqsmessage'>
+## Get SQS Message <a name='getsqsmessage'>
 This method retrieves the data from the specified SQS queue. <br><br>There is a requirement from the combiner module for the ability to retrieve up to 3 messages from the queue. If such capability is needed, then include the number as the second parameter. There is no need if you only require one message because of a default.
 
 ### Parameters: 
@@ -284,7 +284,7 @@ output_Dataframe, receipt_handle = funk.get_dataframe(queue_url, bucket_name, "e
 
 [Back to top](#top)
 
-## Delete from S3 <a name='deletedata'>
+## Delete From S3 <a name='deletedata'>
 Given the name of the bucket and the filename(key), this function will
 delete a file in any format. Performs check if file exists, else return
 error.
