@@ -172,7 +172,7 @@ funk.send_sns_message(checkpoint, arn, "Strata")
 [Back to top](#top)
 <hr>
 
-## Send SNS Message With Anomalies <a name='sendsnmessageanomalies'>
+## Send SNS Message With Anomalies <a name='sendsnsmessageanomalies'>
 This method is responsible for sending a notification to the specified arn, so that it can be used to relay information for the BPM to use and handle.<br><br>
 This version of the send to sns is used by modules that also send a report of data anomalies
 
