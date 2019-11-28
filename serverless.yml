@@ -3,6 +3,8 @@ provider:
   name: aws
   runtime: python3.7
   region: eu-west-2
+  deploymentBucket:
+    name: com.serverless.${self:provider.region}.results.ons.deploys
 
 layers:
   pythonlayer:
