@@ -1,3 +1,11 @@
+class MethodFailure(Exception):
+    """
+    Custom exception signifying that the method has encountered an exception.
+    """
+    def __init__(self, message):
+        self.error_message = message
+
+
 class NoDataInQueueError(Exception):
     """
     Custom exception signifying that there is no data in the queue
@@ -5,11 +13,3 @@ class NoDataInQueueError(Exception):
     """
 
     pass
-
-
-class MethodFailure(Exception):
-    """
-    Custom exception signifying that the method has encountered an exception.
-    """
-    def __init__(self, message):
-        self.error_message = message
