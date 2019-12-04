@@ -7,23 +7,6 @@ import pandas as pd
 from botocore.exceptions import ClientError
 
 
-class NoDataInQueueError(Exception):
-    """
-    Custom exception signifying that there is no data in the queue
-    (the response did not contain messages)
-    """
-
-    pass
-
-
-class MethodFailure(Exception):
-    """
-    Custom exception signifying that the method has encountered an exception.
-    """
-    def __init__(self, message):
-        self.error_message = message
-
-
 def read_from_s3(bucket_name, file_name):
     """
     Given the name of the bucket and the filename(key), this function will
@@ -33,8 +16,8 @@ def read_from_s3(bucket_name, file_name):
     :return: input_file: The JSON file in S3 - Type: String
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
-    object = s3.Object(bucket_name, file_name)
-    input_file = object.get()["Body"].read().decode("UTF-8")
+    s3_object = s3.Object(bucket_name, file_name)
+    input_file = s3_object.get()["Body"].read().decode("UTF-8")
 
     return input_file
 
