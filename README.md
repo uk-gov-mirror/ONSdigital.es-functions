@@ -1,10 +1,10 @@
 
-# es-aws-functions <a name='top'>
+# es_aws_functions <a name='top'>
 Common functions used by the econstats results processes.
 <br>
 Once layer is attached to lambda, the package can be used as follows:
 ```
-from esawsfunctions import aws_functions
+from es_aws_functions import aws_functions
 data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 ```
 <hr>
