@@ -5,7 +5,7 @@ Common functions used by the econstats results processes.
 Once layer is attached to lambda, the package can be used as follows:
 ```
 from esawsfunctions import aws_functions
-data = funk.read_from_s3("MyBucketName", "MyFileName")
+data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 ```
 <hr>
   
@@ -41,11 +41,11 @@ It expects to be passed the error message from the method.
 #### Usage:
 ```
 if str(type(json_response)) != "<class 'str'>":
-    raise funk.MethodFailure(json_response['error'])
+    raise exception_classes.MethodFailure(json_response['error'])
 ```
 
 ```
-except funk.MethodFailure as e:
+except exception_classes.MethodFailure as e:
     error_message = e.error_message
     log_message = "Error in " + method_name + "."
 ```
@@ -77,7 +77,7 @@ Success or error message - Type: String
 ```
 # Stored in variable to retrieve returned success/error message,
 # to be passed to the logger.
-delete = funk.delete_data(bucket_name, file_name)
+delete = aws_functions.delete_data(bucket_name, file_name)
 ```
 [Back to top](#top)
 <hr>
@@ -101,7 +101,7 @@ receipt_handle: The receipt_handle of the incoming message(used to delete old me
 
 #### Usage:
 ```
-message_json, receipt_handle = funk.get_data(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
+message_json, receipt_handle = aws_functions.get_data(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
 ```
 [Back to top](#top)
 <hr>
@@ -125,7 +125,7 @@ receipt_handle: The receipt_handle of the incoming message(used to delete old me
 
 #### Usage:
 ```
-output_Dataframe, receipt_handle = funk.get_dataframe(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
+output_Dataframe, receipt_handle = aws_functions.get_dataframe(queue_url, bucket_name, "enrichment_out.json",incoming_message_group)
 ```
 [Back to top](#top)
 <hr>
@@ -142,11 +142,11 @@ Messages from queue - Type: json string
 
 #### Usage:
 ```
-response = funk.get_sqs_message(queue_url)
+response = aws_functions.get_sqs_message(queue_url)
 -------
 or
 -------
-responses = funk.get_sqs_message(queue_url, 3)
+responses = aws_functions.get_sqs_message(queue_url, 3)
 ```
 [Back to top](#top)
 <hr>
@@ -164,7 +164,7 @@ input_file: The JSON file in S3 - Type: String
 
 #### Usage:
 ```
-data_dataframe = funk.read_dataframe_from_s3(bucket_name, file_name)
+data_dataframe = aws_functions.read_dataframe_from_s3(bucket_name, file_name)
 ```
 [Back to top](#top)
 <hr>
@@ -182,7 +182,7 @@ input_file: The JSON file in S3 - Type: String
 
 #### Usage:
 ```
-data = funk.read_from_s3(bucket_name, file_name)
+data = aws_functions.read_from_s3(bucket_name, file_name)
 #Note that this function returns the data as a string. To use further might require below steps
 message_json = json.loads(data)
 message_dataframe = pd.DataFrame(message_json)
@@ -206,7 +206,7 @@ Nothing
 #### Usage:
 ```
 final_output = json.loads(json_response)
-funk.save_data(bucket_name, file_name, str(final_output), queue_url, sqs_messageid_name)
+aws_functions.save_data(bucket_name, file_name, str(final_output), queue_url, sqs_messageid_name)
 ```
 
 [Back to top](#top)
@@ -225,7 +225,7 @@ Nothing
 
 #### Usage:
 ```
-funk.save_to_s3(bucket_name, file_name, data)
+aws_functions.save_to_s3(bucket_name, file_name, data)
 ```
 [Back to top](#top)
 <hr>
@@ -243,7 +243,7 @@ Json string containing metadata about the message.
 
 #### Usage:
 ```
-funk.send_sns_message(checkpoint, arn, "Strata")
+aws_functions.send_sns_message(checkpoint, arn, "Strata")
 ```
 [Back to top](#top)
 <hr>
@@ -263,7 +263,7 @@ Nothing
 
 #### Usage:
 ```
-funk.send_sns_message_with_anomalies(checkpoint, anomalies, arn, "Enrichment")
+aws_functions.send_sns_message_with_anomalies(checkpoint, anomalies, arn, "Enrichment")
 ```
 [Back to top](#top)
 <hr>
@@ -283,10 +283,10 @@ Json string containing metadata about the message.
 ```
 # Use as part of save data
 sqs_message = json.dumps({"bucket": bucket_name, "key": file_name})
-funk.send_sqs_message(queue_url, sqs_message, message_id)
+aws_functions.send_sqs_message(queue_url, sqs_message, message_id)
 ----------------------
 json_response = returned_data.get('Payload').read().decode("UTF-8")
-funk.send_sqs_message(queue_url, json_response, "Strata")
+aws_functions.send_sqs_message(queue_url, json_response, "Strata")
 
 ```
 [Back to top](#top)
@@ -305,7 +305,7 @@ Nothing
 
 #### Usage:
 ```
-funk.write_dataframe_to_csv(dataframe, bucket_name, filename)
+aws_functions.write_dataframe_to_csv(dataframe, bucket_name, filename)
 ```
 [Back to top](#top)
 <hr>
