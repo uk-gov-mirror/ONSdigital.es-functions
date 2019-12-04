@@ -1,1 +1,1 @@
-name = "es-aws-functions"
+name = "es_aws_functions"
