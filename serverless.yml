@@ -9,7 +9,8 @@ provider:
 layers:
   pythonlayer:
     path: layer/
-    name: ${self:provider.stage}-es-commonfunctions
-    compatibleRuntimes: # optional, a list of runtimes this layer is compatible with
+    name: ${self:provider.stage}-es-common-functions
+    compatibleRuntimes: # A list of runtime environments this layer is compatible with.
       - python3.7
       - python3.6
+    retain: true
