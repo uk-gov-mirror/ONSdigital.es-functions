@@ -26,6 +26,8 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 [Send SNS Message With Anomalies](#sendsnsmessageanomalies)<br>
 [Send SQS Message](#sendsqsmessage)<br>
 [Write Dataframe To CSV](#savetocsv)<br>
+##### General_Functions
+[Calculate Adjacent Periods](#calculateadjacentperiods)<br>
 ##### Other
 [Automated Deployment](#autodeploy)<br>
 <hr>
@@ -307,6 +309,25 @@ Nothing
 ```
 aws_functions.write_dataframe_to_csv(dataframe, bucket_name, filename)
 ```
+[Back to top](#top)
+<hr>
+
+## General Functions
+### Calculate Adjacent Periods <a name='calculateadjacentperiods'>
+This function takes a period (Format: YYYYMM) and a periodicity. <br>
+
+#### Parameters:
+Period: Format YYYYMM of the period you are calculating for. - Type: String/Int. <br>
+Periodicity: '01' Monthly, '02' Annually, '03' Quarterly - Type: String. <br>
+
+#### Return:
+Period: Format YYYYMM of the previous period. Type: String. <br>
+
+#### Usage:
+```
+general_function.calculate_adjactent_periods("201606", "03")
+```
+
 [Back to top](#top)
 <hr>
 
