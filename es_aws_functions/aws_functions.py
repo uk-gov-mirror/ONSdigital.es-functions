@@ -5,6 +5,7 @@ from io import StringIO
 import boto3
 import pandas as pd
 from botocore.exceptions import ClientError
+import exception_classes
 
 
 def delete_data(bucket_name, file_name):
@@ -113,6 +114,35 @@ def get_sqs_message(queue_url, max_number_of_messages=1):
     sqs = boto3.client("sqs", region_name="eu-west-2")
     return sqs.receive_message(QueueUrl=queue_url, AttributeNames=["MessageGroupId"],
                                MaxNumberOfMessages=max_number_of_messages)
+
+
+def get_sqs_messages(sqs_queue_url, number_of_messages, incoming_message_group):
+    """
+    This method retrieves a number of messages from the sqs queue.
+    It takes 10 messages from the queue, then checks each to see if it comes from
+    the appropriate message_group.
+
+    :param sqs_queue_url: The url of the SQS queue. - Type: String
+    :param number_of_messages: Number of messages expected
+                (will raise error if not met): Type - Int
+    :param incoming_message_group: The message group of messages to collect.
+    :return: Messages from queue - List of Json Strings
+    """
+    messages = {}
+    messages["Messages"] = []
+    # Grab 10 messages from queue
+    responses = get_sqs_message(sqs_queue_url, 10)
+    if "Messages" not in responses:
+        raise exception_classes.NoDataInQueueError("No Messages in queue")
+    # Loop through the messages to see if they fit criteria
+    for response in responses['Messages']:
+        if (incoming_message_group in response['Attributes']['MessageGroupId']):
+            messages["Messages"].append(response)
+    if (len(messages['Messages']) < number_of_messages):
+        raise exception_classes.DoNotHaveAllDataError(
+            "Only " + str(len(messages["Messages"])) + " recieved"
+        )
+    return messages
 
 
 def read_dataframe_from_s3(bucket_name, file_name):
