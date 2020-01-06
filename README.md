@@ -13,11 +13,13 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 ##### Exception_Classes
 [Method Failure](#methodfailure)<br>
 [No Data In Queue Error](#nodatainqueue)<br>
+[Do Not Have All Data Error](#donthavealldata)<br>
 ##### AWS_Functions
 [Delete Data](#deletedata)<br>
 [Get Data](#getdata)<br>
 [Get DataFrame](#getdataframe)<br>
 [Get SQS Message](#getsqsmessage)<br>
+[Get SQS Messages](#getsqsmessages)<br>
 [Read DataFrame From S3](#readdataframefroms3)<br>
 [Read From S3](#readfroms3)<br>
 [Save Data](#savedata)<br>
@@ -58,6 +60,12 @@ except exception_classes.MethodFailure as e:
 ### Class NoDataInQueueError  <a name='nodatainqueue'>
 Custom exception thrown when response does not contain any messages.
   
+[Back to top](#top)
+<hr>
+
+### Class DoNotHaveAllDataError  <a name='donthavealldata'>
+Custom exception used by the modules which need to take more than one message from a queue, but fail to.
+
 [Back to top](#top)
 <hr>
 
@@ -150,6 +158,27 @@ or
 -------
 responses = aws_functions.get_sqs_message(queue_url, 3)
 ```
+[Back to top](#top)
+<hr>
+
+### Get SQS Messages <a name='getsqsmessages'>
+This method retrieves a number of messages from the sqs queue.
+It takes 10 messages from the queue, then checks each to see if it comes from
+the appropriate message_group.
+
+#### Parameters: 
+queue_url: The url of the SQS queue.<br>
+number_of_messages: Number of messages expected(will raise error if not met) - Type: Int
+incoming_message_group: The message group of messages to collect.
+
+#### Returns:
+Messages from queue - List of Json Strings
+
+#### Usage:
+```
+response = aws_functions.get_sqs_messages(queue_url, 3, 'aggregation')
+```
+
 [Back to top](#top)
 <hr>
 

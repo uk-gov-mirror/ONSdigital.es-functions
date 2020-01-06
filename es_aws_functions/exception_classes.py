@@ -13,3 +13,11 @@ class NoDataInQueueError(Exception):
     """
 
     pass
+
+
+class DoNotHaveAllDataError(Exception):
+    """
+    Custom exception used by the modules which need to take more than
+    one message from a queue, but fail to.
+    """
+    pass
