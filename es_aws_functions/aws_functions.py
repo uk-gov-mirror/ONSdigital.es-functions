@@ -271,7 +271,6 @@ def send_sqs_message(queue_url, message, output_message_id):
     )
 
 
-
 def write_dataframe_to_csv(dataframe, bucket_name, filename):
     """
     This function takes a Dataframe and stores it in a specific bucket.
