@@ -36,6 +36,12 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 
 ## Exception_Classes
 
+### Class DoNotHaveAllDataError  <a name='donthavealldata'>
+Custom exception used by the modules which need to take more than one message from a queue, but fail to.
+
+[Back to top](#top)
+<hr>
+
 ### Class MethodFailure  <a name='methodfailure'>
 Custom exception thrown when the method has encountered an exception.
   
@@ -60,12 +66,6 @@ except exception_classes.MethodFailure as e:
 ### Class NoDataInQueueError  <a name='nodatainqueue'>
 Custom exception thrown when response does not contain any messages.
   
-[Back to top](#top)
-<hr>
-
-### Class DoNotHaveAllDataError  <a name='donthavealldata'>
-Custom exception used by the modules which need to take more than one message from a queue, but fail to.
-
 [Back to top](#top)
 <hr>
 
