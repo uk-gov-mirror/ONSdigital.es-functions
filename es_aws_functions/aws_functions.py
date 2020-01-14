@@ -99,7 +99,7 @@ def get_dataframe(queue_url, bucket_name, key, incoming_message_group):
     (used to delete old message) - Type: String
     """
     data, receipt_handle = get_data(queue_url, bucket_name, key, incoming_message_group)
-    data = pd.read_json(data)
+    data = pd.read_json(data, dtype=False)
     return data, receipt_handle
 
 
