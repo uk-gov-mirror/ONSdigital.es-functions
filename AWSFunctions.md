@@ -14,7 +14,7 @@
 [Send SQS Message](#sendsqsmessage)<br>
 [Write Dataframe To CSV](#savetocsv)<br>
 ## Functions
-### Delete From S3 <a name='deletedata'>
+### Delete Data <a name='deletedata'>
 Given the name of the bucket and the filename(key), this function will
 delete a file in any format. Performs check if file exists, else return
 error.
