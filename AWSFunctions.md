@@ -1,4 +1,4 @@
-# AWS_Functions <a name='top'>
+# AWS Functions <a name='top'>
 ## Contents
 [Delete Data](#deletedata)<br>
 [Get Data](#getdata)<br>
