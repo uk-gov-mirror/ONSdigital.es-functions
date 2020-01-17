@@ -14,6 +14,7 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 [Exception Classes](ExceptionClasses.md)<br>
 [General Functions](GeneralFunctions.md)<br>
 [Test Generic Library](TestGenericLibrary.md)<br>
+[Test Module Example](TestModuleExample.md)
 
 ## Automated Deployment <a name='autodeploy'>
 This project can be automatically deployed via docker and serverless framework. To do so, follow:<br>
