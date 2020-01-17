@@ -1,3 +1,4 @@
+import io
 import json
 from unittest import mock
 
@@ -104,7 +105,7 @@ def incomplete_read_error(lambda_function, runtime_variables,
 
     Takes in a valid file(s) so that the function performs until after the lambda invoke.
 
-    The file that triggers the incomplete_read is generic, so hardcoded.
+    The data that triggers the incomplete_read is generic, so hardcoded as a variable.
 
     :param lambda_function: Lambda function to test - Type: Function
     :param runtime_variables: Runtime variables to send to function - Type: Dict
@@ -125,12 +126,11 @@ def incomplete_read_error(lambda_function, runtime_variables,
             mock_client_object = mock.Mock()
             mock_client.return_value = mock_client_object
 
-            with open("tests/fixtures/test_incomplete_read_error_input.json", "rb")\
-                    as test_data_bad:
-                mock_client_object.invoke.return_value = {
-                    "Payload": StreamingBody(test_data_bad, 1)}
+            test_data_bad = io.BytesIO(b'{"Bad Bytes": 999}')
+            mock_client_object.invoke.return_value = {
+                "Payload": StreamingBody(test_data_bad, 1)}
 
-                output = lambda_function.lambda_handler(runtime_variables, context_object)
+            output = lambda_function.lambda_handler(runtime_variables, context_object)
 
     assert 'error' in output.keys()
     assert output["error"].__contains__("""Incomplete Lambda response""")
