@@ -377,6 +377,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.client_error()
+```
+
 [Back to top](#top)
 <hr>
 
@@ -384,6 +388,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.create_bucket("test_bucket")
+```
+
 [Back to top](#top)
 <hr>
 
@@ -391,6 +399,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.create_client("s3", "eu-west-2")
+```
+
 [Back to top](#top)
 <hr>
 
@@ -398,6 +410,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.general_error()
+```
+
 [Back to top](#top)
 <hr>
 
@@ -405,6 +421,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.incomplete_read_error()
+```
+
 [Back to top](#top)
 <hr>
 
@@ -412,6 +432,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.key_error()
+```
+
 [Back to top](#top)
 <hr>
 
@@ -419,6 +443,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.method_error()
+```
+
 [Back to top](#top)
 <hr>
 
@@ -426,6 +454,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.replacement_get_dataframe("", "test_bucket", "file_1.json", "")
+```
+
 [Back to top](#top)
 <hr>
 
@@ -433,6 +465,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.replacement_save_data("", "file_1.json", '{"key": "value"}'}, "", "")
+```
+
 [Back to top](#top)
 <hr>
 
@@ -440,6 +476,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.upload_files(client, "test_bucket", ["file_1.json", "file_2.json"])
+```
+
 [Back to top](#top)
 <hr>
 
@@ -447,6 +487,10 @@ general_function.calculate_adjactent_periods("201606", "03")
 #### Parameters:
 #### Return:
 #### Usage:
+```
+test_generic_library.value_error()
+```
+
 [Back to top](#top)
 <hr>
 
