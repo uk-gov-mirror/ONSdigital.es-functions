@@ -502,8 +502,8 @@ Makes use of an empty dict of runtime variables,<br>
 which triggers a key error once access is attempted.
 
 #### Parameters:
-lambda_function: Lambda function to test - Type: Function
-environment_variables: Environment Vars to send to function - Type: Dict
+lambda_function: Lambda function to test - Type: Function<br>
+environment_variables: Environment Vars to send to function - Type: Dict<br>
 runtime_variables: Runtime variables to send to function(default is empty dict) - Type: Dict
 
 #### Return:
@@ -523,10 +523,10 @@ Function to trigger a method error in a given function.<br><Br>
 Takes in a valid file(s) so that the function performs until after the lambda invoke.
 
 #### Parameters:
-lambda_function: Lambda function to test - Type: Function
-runtime_variables: Runtime variables to send to function - Type: Dict
-environment_variables: Environment Vars to send to function - Type: Dict
-file_list: List of input files for the function - Type: List
+lambda_function: Lambda function to test - Type: Function<br>
+runtime_variables: Runtime variables to send to function - Type: Dict<br>
+environment_variables: Environment Vars to send to function - Type: Dict<br>
+file_list: List of input files for the function - Type: List<br>
 wrangler_name: Wrangler that is being tested, used in mocking boto3. - Type: String
 
 #### Return:
