@@ -30,6 +30,18 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 [Write Dataframe To CSV](#savetocsv)<br>
 ##### General_Functions
 [Calculate Adjacent Periods](#calculateadjacentperiods)<br>
+##### Test Generic Library
+[Client Error](#clienterror)<br>
+[Create Bucket](#createbucket)<br>
+[Create Client](#createclient)<br>
+[General Error](#generalerror)<br>
+[Incomplete Read Error](#incompletereaderror)<br>
+[Key Error](#keyerror)<br>
+[Method Error](#methoderror)<br>
+[Replacement Get Dataframe](#replacementgetdataframe)<br>
+[Replacement Save Data](#replacementsavedata)<br>
+[Upload Files](#uploadfiles)<br>
+[Value Error](#valueerror)<br>
 ##### Other
 [Automated Deployment](#autodeploy)<br>
 <hr>
@@ -357,6 +369,84 @@ Period: Format YYYYMM of the previous period. Type: String. <br>
 general_function.calculate_adjactent_periods("201606", "03")
 ```
 
+[Back to top](#top)
+<hr>
+
+## Test Generic Library
+### Client Error <a name='clienterror'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Create Bucket <a name='createbucket'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Create Client <a name='createclient'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### General Error <a name='generalerror'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Incomplete Read Error <a name='incompletereaderror'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Key Error <a name='keyerror'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Method Error <a name='methoderror'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Replacement Get Dataframe <a name='replacementgetdataframe'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Replacement Save Data <a name='replacementsavedata'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Upload Files <a name='uploadfiles'>
+#### Parameters:
+#### Return:
+#### Usage:
+[Back to top](#top)
+<hr>
+
+### Value Error <a name='valueerror'>
+#### Parameters:
+#### Return:
+#### Usage:
 [Back to top](#top)
 <hr>
 
