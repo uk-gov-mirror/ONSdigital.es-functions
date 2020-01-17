@@ -1,4 +1,5 @@
 # General Functions <a name='top'>
+[Back](README.md)
 ## Contents
 [Calculate Adjacent Periods](#calculateadjacentperiods)<br>
 ## Functions
