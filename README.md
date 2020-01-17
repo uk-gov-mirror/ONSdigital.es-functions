@@ -10,11 +10,11 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 <hr>
   
 ### Contents:
-##### Exception_Classes
+##### Exception Classes
 [Method Failure](#methodfailure)<br>
 [No Data In Queue Error](#nodatainqueue)<br>
 [Do Not Have All Data Error](#donthavealldata)<br>
-##### AWS_Functions
+##### AWS Functions
 [Delete Data](#deletedata)<br>
 [Get Data](#getdata)<br>
 [Get DataFrame](#getdataframe)<br>
@@ -28,7 +28,7 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 [Send SNS Message With Anomalies](#sendsnsmessageanomalies)<br>
 [Send SQS Message](#sendsqsmessage)<br>
 [Write Dataframe To CSV](#savetocsv)<br>
-##### General_Functions
+##### General Functions
 [Calculate Adjacent Periods](#calculateadjacentperiods)<br>
 ##### Test Generic Library
 [Client Error](#clienterror)<br>
