@@ -61,7 +61,7 @@ client = test_generic_library.create_bucket(bucket_name)
 <hr>
 
 ### Create Client <a name='createclient'>
-Create a boto3 client for use with aws tests.<br>]
+Create a boto3 client for use with aws tests.<br>
 
 #### Parameters:
 client_type: Type of client(eg. s3, lambda, sqs etc) - Type: String<br>
