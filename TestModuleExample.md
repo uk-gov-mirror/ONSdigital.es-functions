@@ -5,6 +5,8 @@
 Here is a copy of the generic tests being used in the Enrichment module.
 Most modules should be able to use a copy of this with different parameters.
 
+Note that for the generic tests to be used the runtime and evironment variables need to be read in before anytime else is done. Also when passing parameters into the method you need to ensure they are wrapped in a "RuntimeVariables": {'Parameters Go Here'}
+
 ## Example Class
 ```
 class GenericErrors(unittest.TestCase):
