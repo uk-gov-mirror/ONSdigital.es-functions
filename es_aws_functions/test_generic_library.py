@@ -254,7 +254,7 @@ def upload_files(client, bucket_name, file_list):
     return client
 
 
-def value_error(lambda_function, runtime_variables,
+def value_error(lambda_function, runtime_variables=bad_runtime_variables,
                 environment_variables=bad_environment_variables):
     """
     Function to trigger a value error in a given function.
