@@ -11,6 +11,7 @@ Custom exception used by the modules which need to take more than one message fr
 
 [Back to top](#top)
 <hr>
+
 ### Class LambdaFailure  <a name='lambfail'>
 Custom exception signifying that the lambda has failed.
 This is to be passed back to the step function.
