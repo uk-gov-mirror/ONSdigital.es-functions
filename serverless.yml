@@ -4,7 +4,7 @@ provider:
   runtime: python3.7
   region: eu-west-2
   deploymentBucket:
-    name: com.serverless.${self:provider.region}.results.ons.deploys
+    name: com.serverless.eu-west-2.results.ons.deploys
 
 layers:
   pythonlayer:
