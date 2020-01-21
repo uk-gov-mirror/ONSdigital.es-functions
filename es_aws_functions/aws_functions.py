@@ -6,7 +6,7 @@ import boto3
 import pandas as pd
 from botocore.exceptions import ClientError
 
-import es_aws_functions.exception_classes as exception_classes
+from es_aws_functions import exception_classes
 
 
 def delete_data(bucket_name, file_name):
