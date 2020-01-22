@@ -1,10 +1,12 @@
 # Exception Classes <a name='top'>
 [Back](README.md)
+  
 ## Contents
-[Method Failure](#methodfailure)<br>
-[No Data In Queue Error](#nodatainqueue)<br>
 [Do Not Have All Data Error](#donthavealldata)<br>
 [Lambda Failure](#lambfail)<br>
+[Method Failure](#methodfailure)<br>
+[No Data In Queue Error](#nodatainqueue)<br>
+
 ## Functions
 ### Class DoNotHaveAllDataError  <a name='donthavealldata'>
 Custom exception used by the modules which need to take more than one message from a queue, but fail to.
