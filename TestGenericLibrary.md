@@ -12,6 +12,7 @@
 [Replacement Save Data](#replacementsavedata)<br>
 [Upload Files](#uploadfiles)<br>
 [Value Error](#valueerror)<br>
+
 ## Functions
 ### Client Error <a name='clienterror'>
 Function to trigger a client error in a lambda. By not mocking any of the boto3 functions, once any are used in code they will trigger client error due to lack of credentials.<br><br>
@@ -28,16 +29,7 @@ file_name: Name of file to retrieve data from - Type: String<br>
 Test Pass/Fail<br>
 #### Usage:
 ```
-    @parameterized.expand([
-        (lambda_method_function, method_runtime_variables,
-         method_environment_variables, "tests/fixtures/test_method_input.json"),
-        (lambda_wrangler_function, wrangler_runtime_variables,
-         wrangler_environment_variables, None)
-    ])
-    def test_client_error(self, which_lambda, which_runtime_variables,
-                          which_environment_variables, which_data):
-        test_generic_library.client_error(which_lambda, which_runtime_variables,
-                                          which_environment_variables, which_data)
+test_generic_library.client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data)
 ```
 
 [Back to top](#top)
