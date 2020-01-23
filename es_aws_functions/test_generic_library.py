@@ -15,7 +15,7 @@ class MockContext:
 bad_environment_variables = {}
 
 bad_runtime_variables = {
-    "RuntimeVariables": {}
+    "RuntimeVariables": {"run_id":"run_id"}
 }
 
 context_object = MockContext()
