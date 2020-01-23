@@ -17,7 +17,8 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 [Test Module Example](TestModuleExample.md)
 
 ## Automated Deployment <a name='autodeploy'>
-This project can be automatically deployed via docker and serverless framework. To do so, follow:<br>
+
+Concourse should auto-deploy the layer, if you wish to do it manually and deploy via docker and serverless framework. To do so, follow:<br>
 ```
 ./do.sh build
 aws-vault exec serverless -- ./do.sh deploy
