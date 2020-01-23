@@ -3,8 +3,8 @@ import json
 from unittest import mock
 
 import boto3
-from botocore.response import StreamingBody
 import pytest
+from botocore.response import StreamingBody
 from es_aws_functions import aws_functions, exception_classes
 
 
