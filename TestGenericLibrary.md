@@ -7,11 +7,11 @@
 [General Error](#generalerror)<br>
 [Incomplete Read Error](#incompletereaderror)<br>
 [Key Error](#keyerror)<br>
-[Method Error](#methoderror)<br>
 [Replacement Get Dataframe](#replacementgetdataframe)<br>
 [Replacement Save Data](#replacementsavedata)<br>
 [Upload Files](#uploadfiles)<br>
 [Value Error](#valueerror)<br>
+[Wrangler Method Error](#methoderror)<br>
 
 ## Functions
 ### Client Error <a name='clienterror'>
@@ -19,6 +19,11 @@ Function to trigger a client error in a lambda. By not mocking any of the boto3 
 
 If used on a method, data is part of the runtime_variables, so the file_name is loaded in
 and the file added to the runtime_variables dictionary.
+
+#### Variants:
+wrangler_client_error()<br>
+method_client_error()
+
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 runtime_variables: Runtime variables to send to function - Type: Dict<br>
@@ -29,7 +34,10 @@ file_name: Name of file to retrieve data from - Type: String<br>
 Test Pass/Fail<br>
 #### Usage:
 ```
-test_generic_library.client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data)
+test_generic_library.method_client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data)
+
+test_generic_library.wrangler_client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data)
+
 ```
 
 [Back to top](#top)
@@ -81,6 +89,10 @@ The variable 'mockable_function' defines the function in the lambda that will
 be mocked out. This should be something fairly early in the code (but still
 within try/except). e.g. "enrichment_wrangler.EnvironSchema"
 
+#### Variants:
+wrangler_general_error()<br>
+method_general_error()
+
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 runtime_variables: Runtime variables to send to function - Type: Dict<br>
@@ -92,8 +104,12 @@ Test Pass/Fail
 
 #### Usage:
 ```
-test_generic_library.general_error(which_lambda, which_runtime_variables,
+test_generic_library.method_general_error(which_lambda, which_runtime_variables,
                                            which_environment_variables, mockable_function)
+
+test_generic_library.wrangler_general_error(which_lambda, which_runtime_variables,
+                                           which_environment_variables, mockable_function)
+
 ```
 
 [Back to top](#top)
@@ -133,6 +149,10 @@ Function to trigger a key error in a given lambda.<br><bR>
 Makes use of an empty dict of runtime variables,<br>
 which triggers a key error once access is attempted.
 
+#### Variants:
+wrangler_value_error()<br>
+method_value_error()
+
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 environment_variables: Environment Vars to send to function - Type: Dict<br>
@@ -143,38 +163,15 @@ Test Pass/Fail
 
 #### Usage:
 ```
-test_generic_library.key_error(which_lambda, which_environment_variables, bad_runtime_variables)
+test_generic_library.wrangler_key_error(which_lambda, which_environment_variables, bad_runtime_variables)
+
+test_generic_library.method_key_error(which_lambda, which_environment_variables, bad_runtime_variables)
+
 ```
 
 [Back to top](#top)
 <hr>
 
-### Method Error <a name='methoderror'>
-Function to trigger a method error in a given function.<br><Br>
-
-Takes in a valid file(s) so that the function performs until after the lambda invoke.
-
-#### Parameters:
-lambda_function: Lambda function to test - Type: Function<br>
-runtime_variables: Runtime variables to send to function - Type: Dict<br>
-environment_variables: Environment Vars to send to function - Type: Dict<br>
-file_list: List of input files for the function - Type: List<br>
-wrangler_name: Wrangler that is being tested, used in mocking boto3. - Type: String
-
-#### Return:
-Test Pass/Fail
-
-#### Usage:
-```
-test_generic_library.method_error(lambda_wrangler_function,
-                                          wrangler_runtime_variables,
-                                          wrangler_environment_variables,
-                                          file_list,
-                                          "enrichment_wrangler")
-```
-
-[Back to top](#top)
-<hr>
 
 ### Replacement Get Dataframe <a name='replacementgetdataframe'>
 Function to replace the aws-functions.get_dataframe when performing tests.<br><Br>
@@ -252,6 +249,10 @@ Function to trigger a value error in a given function.<br><br>
 Does so by passing an empty list of environment variables
 to trigger an error with marshmallow.
 
+#### Variants:
+wrangler_value_error()<br>
+method_value_error()
+
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 runtime_variables: Runtime variables to send to function - Type: Dict<br>
@@ -262,7 +263,36 @@ Test Pass/Fail
 
 #### Usage:
 ```
-test_generic_library.value_error(which_lambda, bad_runtime_variables, bad_environment_variables)
+test_generic_library.method_value_error(which_lambda, bad_runtime_variables, bad_environment_variables)
+
+test_generic_library.wrangler_value_error(which_lambda, bad_runtime_variables, bad_environment_variables)
+```
+
+[Back to top](#top)
+<hr>
+
+### Wrangler Method Error <a name='methoderror'>
+Function to trigger a method error in a given function.<br><Br>
+
+Takes in a valid file(s) so that the function performs until after the lambda invoke.
+
+#### Parameters:
+lambda_function: Lambda function to test - Type: Function<br>
+runtime_variables: Runtime variables to send to function - Type: Dict<br>
+environment_variables: Environment Vars to send to function - Type: Dict<br>
+file_list: List of input files for the function - Type: List<br>
+wrangler_name: Wrangler that is being tested, used in mocking boto3. - Type: String
+
+#### Return:
+Test Pass/Fail
+
+#### Usage:
+```
+test_generic_library.wrangler_method_error(lambda_wrangler_function,
+                                          wrangler_runtime_variables,
+                                          wrangler_environment_variables,
+                                          file_list,
+                                          "enrichment_wrangler")
 ```
 
 [Back to top](#top)
