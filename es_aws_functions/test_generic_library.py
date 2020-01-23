@@ -1,10 +1,10 @@
 import io
 import json
 from unittest import mock
-
+import pytest
 import boto3
 from botocore.response import StreamingBody
-from es_aws_functions import aws_functions
+from es_aws_functions import aws_functions, exception_classes
 
 
 class MockContext:
@@ -39,11 +39,10 @@ def client_error(lambda_function, runtime_variables, environment_variables, file
             with open(file_name, "r") as file:
                 test_data = file.read()
             runtime_variables["RuntimeVariables"]["data"] = test_data
+        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+            lambda_function.lambda_handler(runtime_variables, context_object)
+        assert "AWS Error" in exc_info.value.error_message
 
-        output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""AWS Error""")
 
 
 def create_bucket(bucket_name):
@@ -92,11 +91,9 @@ def general_error(lambda_function, runtime_variables,
         mock_schema.side_effect = Exception("Failed To Log")
 
         with mock.patch.dict(lambda_function.os.environ, environment_variables):
-            output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""General Error""")
-
+            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+                lambda_function.lambda_handler(runtime_variables, context_object)
+            assert "General Error" in exc_info.value.error_message
 
 def incomplete_read_error(lambda_function, runtime_variables,
                           environment_variables, file_list, wrangler_name):
@@ -129,12 +126,9 @@ def incomplete_read_error(lambda_function, runtime_variables,
             test_data_bad = io.BytesIO(b'{"Bad Bytes": 999}')
             mock_client_object.invoke.return_value = {
                 "Payload": StreamingBody(test_data_bad, 1)}
-
-            output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""Incomplete Lambda response""")
-
+            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+                lambda_function.lambda_handler(runtime_variables, context_object)
+            assert "Incomplete Lambda response" in exc_info.value.error_message
 
 def key_error(lambda_function, environment_variables,
               runtime_variables=bad_runtime_variables):
@@ -151,11 +145,9 @@ def key_error(lambda_function, environment_variables,
     :return Test Pass/Fail
     """
     with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""Key Error""")
-
+        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+            lambda_function.lambda_handler(runtime_variables, context_object)
+    assert "Key Error" in exc_info.value.error_message
 
 def method_error(lambda_function, runtime_variables,
                  environment_variables, file_list, wrangler_name):
@@ -187,12 +179,9 @@ def method_error(lambda_function, runtime_variables,
                 .read.return_value.decode.return_value = \
                 json.dumps({"error": "Test Message",
                             "success": False})
-
-            output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""Test Message""")
-
+            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+                lambda_function.lambda_handler(runtime_variables, context_object)
+            assert "Test Message" in exc_info.value.error_message
 
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
                               in_file_name, incoming_message_group):
@@ -268,7 +257,7 @@ def value_error(lambda_function, runtime_variables=bad_runtime_variables,
     :return Test Pass/Fail
     """
     with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        output = lambda_function.lambda_handler(runtime_variables, context_object)
+        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+            lambda_function.lambda_handler(runtime_variables, context_object)
+    assert "Parameter Validation Error" in exc_info.value.error_message
 
-    assert 'error' in output.keys()
-    assert output['error'].__contains__("""Parameter Validation Error""")
