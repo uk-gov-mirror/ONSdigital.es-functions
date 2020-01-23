@@ -15,13 +15,14 @@ class MockContext:
 bad_environment_variables = {}
 
 bad_runtime_variables = {
-    "RuntimeVariables": {"run_id":"run_id"}
+    "RuntimeVariables": {"run_id": "run_id"}
 }
 
 context_object = MockContext()
 
 
-def wrangler_client_error(lambda_function, runtime_variables, environment_variables, file_name):
+def wrangler_client_error(lambda_function, runtime_variables,
+                          environment_variables, file_name):
     """
     Function to trigger a client error in a wrangler.
     By not mocking any of the boto3 functions, once any are used in code they will
@@ -45,7 +46,8 @@ def wrangler_client_error(lambda_function, runtime_variables, environment_variab
         assert "AWS Error" in exc_info.value.error_message
 
 
-def method_client_error(lambda_function, runtime_variables, environment_variables, file_name):
+def method_client_error(lambda_function, runtime_variables,
+                        environment_variables, file_name):
     """
     Function to trigger a client error in a method.
     By not mocking any of the boto3 functions, once any are used in code they will
@@ -98,7 +100,7 @@ def create_client(client_type, region="eu-west-2"):
 
 
 def wrangler_general_error(lambda_function, runtime_variables,
-                  environment_variables, mockable_function):
+                           environment_variables, mockable_function):
     """
     Function to trigger a general error in a given wrangler.
 
@@ -122,7 +124,7 @@ def wrangler_general_error(lambda_function, runtime_variables,
 
 
 def method_general_error(lambda_function, runtime_variables,
-                  environment_variables, mockable_function):
+                         environment_variables, mockable_function):
     """
     Function to trigger a general error in a given method.
     The variable 'mockable_function' defines the function in the lambda that will
@@ -182,7 +184,7 @@ def incomplete_read_error(lambda_function, runtime_variables,
 
 
 def wrangler_key_error(lambda_function, environment_variables,
-              runtime_variables=bad_runtime_variables):
+                       runtime_variables=bad_runtime_variables):
     """
     Function to trigger a key error in a given wrangler.
 
@@ -202,7 +204,7 @@ def wrangler_key_error(lambda_function, environment_variables,
 
 
 def method_key_error(lambda_function, environment_variables,
-              runtime_variables=bad_runtime_variables):
+                     runtime_variables=bad_runtime_variables):
     """
     Function to trigger a key error in a given method.
     Makes use of an empty dict of runtime variables,
@@ -221,7 +223,7 @@ def method_key_error(lambda_function, environment_variables,
 
 
 def wrangler_method_error(lambda_function, runtime_variables,
-                 environment_variables, file_list, wrangler_name):
+                          environment_variables, file_list, wrangler_name):
     """
     Function to trigger a method error in a given function.
 
@@ -316,7 +318,7 @@ def upload_files(client, bucket_name, file_list):
 
 
 def wrangler_value_error(lambda_function, runtime_variables=bad_runtime_variables,
-                environment_variables=bad_environment_variables):
+                         environment_variables=bad_environment_variables):
     """
     Function to trigger a value error in a given wrangler.
 
@@ -335,7 +337,7 @@ def wrangler_value_error(lambda_function, runtime_variables=bad_runtime_variable
 
 
 def method_value_error(lambda_function, runtime_variables=bad_runtime_variables,
-                environment_variables=bad_environment_variables):
+                       environment_variables=bad_environment_variables):
     """
     Function to trigger a value error in a given method.
     Does so by passing an empty list of environment variables
