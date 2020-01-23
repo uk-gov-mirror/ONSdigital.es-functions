@@ -125,7 +125,6 @@ def method_general_error(lambda_function, runtime_variables,
                   environment_variables, mockable_function):
     """
     Function to trigger a general error in a given method.
-
     The variable 'mockable_function' defines the function in the lambda that will
     be mocked out. This should be something fairly early in the code (but still
     within try/except). e.g. "enrichment_wrangler.EnvironSchema"
@@ -140,9 +139,10 @@ def method_general_error(lambda_function, runtime_variables,
         mock_schema.side_effect = Exception("Failed To Log")
 
         with mock.patch.dict(lambda_function.os.environ, environment_variables):
-            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
-                lambda_function.lambda_handler(runtime_variables, context_object)
-            assert "General Error" in exc_info.value.error_message
+            output = lambda_function.lambda_handler(runtime_variables, context_object)
+
+    assert 'error' in output.keys()
+    assert output["error"].__contains__("""General Error""")
 
 
 def incomplete_read_error(lambda_function, runtime_variables,
