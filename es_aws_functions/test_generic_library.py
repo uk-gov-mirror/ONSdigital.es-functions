@@ -44,7 +44,6 @@ def client_error(lambda_function, runtime_variables, environment_variables, file
         assert "AWS Error" in exc_info.value.error_message
 
 
-
 def create_bucket(bucket_name):
     """
     Create an s3 bucket.
@@ -95,6 +94,7 @@ def general_error(lambda_function, runtime_variables,
                 lambda_function.lambda_handler(runtime_variables, context_object)
             assert "General Error" in exc_info.value.error_message
 
+
 def incomplete_read_error(lambda_function, runtime_variables,
                           environment_variables, file_list, wrangler_name):
     """
@@ -130,6 +130,7 @@ def incomplete_read_error(lambda_function, runtime_variables,
                 lambda_function.lambda_handler(runtime_variables, context_object)
             assert "Incomplete Lambda response" in exc_info.value.error_message
 
+
 def key_error(lambda_function, environment_variables,
               runtime_variables=bad_runtime_variables):
     """
@@ -148,6 +149,7 @@ def key_error(lambda_function, environment_variables,
         with pytest.raises(exception_classes.LambdaFailure) as exc_info:
             lambda_function.lambda_handler(runtime_variables, context_object)
     assert "Key Error" in exc_info.value.error_message
+
 
 def method_error(lambda_function, runtime_variables,
                  environment_variables, file_list, wrangler_name):
@@ -182,6 +184,7 @@ def method_error(lambda_function, runtime_variables,
             with pytest.raises(exception_classes.LambdaFailure) as exc_info:
                 lambda_function.lambda_handler(runtime_variables, context_object)
             assert "Test Message" in exc_info.value.error_message
+
 
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
                               in_file_name, incoming_message_group):
@@ -260,4 +263,3 @@ def value_error(lambda_function, runtime_variables=bad_runtime_variables,
         with pytest.raises(exception_classes.LambdaFailure) as exc_info:
             lambda_function.lambda_handler(runtime_variables, context_object)
     assert "Parameter Validation Error" in exc_info.value.error_message
-
