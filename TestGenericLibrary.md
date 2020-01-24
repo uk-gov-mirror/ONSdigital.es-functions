@@ -1,9 +1,11 @@
 # Test Generic Library <a name='top'>
 [Back](README.md)
 ## Contents
+### Assertions
 [Method Assert](#methodassert)<br>
 [Wrangler_Assert](#wranglerassert)<br><br>
 
+### Functions
 [Client Error](#clienterror)<br>
 [Create Bucket](#createbucket)<br>
 [Create Client](#createclient)<br>
