@@ -49,12 +49,34 @@ def client_error(lambda_function, runtime_variables,
 
 
 def method_assert(lambda_function, runtime_variables, expected_message):
+    """
+    Function to perform sad path assertion on methods
+    (method sad path is different to wrangler)
+
+    Runs function to get output, then checks output.
+    :param lambda_function: Lambda function to test - Type: Function
+    :param runtime_variables: Runtime variables to send to function - Type: Dict
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :return Test Pass/Fail
+    """
     output = lambda_function.lambda_handler(runtime_variables, context_object)
     assert 'error' in output.keys()
     assert expected_message in output["error"]
 
 
 def wrangler_assert(lambda_function, runtime_variables, expected_message):
+    """
+    Function to perform sad path assertion on wrangler
+    (method sad path is different to wrangler)
+
+    Runs function and asserts that exception is raised, then checks the contents.
+    :param lambda_function: Lambda function to test - Type: Function
+    :param runtime_variables: Runtime variables to send to function - Type: Dict
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :return Test Pass/Fail
+    """
     with pytest.raises(exception_classes.LambdaFailure) as exc_info:
         lambda_function.lambda_handler(runtime_variables, context_object)
     assert expected_message in exc_info.value.error_message
