@@ -21,55 +21,65 @@ bad_runtime_variables = {
 context_object = MockContext()
 
 
-def wrangler_client_error(lambda_function, runtime_variables,
-                          environment_variables, file_name):
+def method_assert(lambda_function, runtime_variables, expected_message):
     """
-    Function to trigger a client error in a wrangler.
-    By not mocking any of the boto3 functions, once any are used in code they will
-    trigger client error due to lack of credentials.
+    Function to perform sad path assertion on methods
+    (method sad path is different to wrangler)
 
-    If used on a method, data is part of the runtime_variables, so the file_name is loaded
-    in and the file added to the runtime_variables dictionary.
+    Runs function to get output, then checks output.
     :param lambda_function: Lambda function to test - Type: Function
     :param runtime_variables: Runtime variables to send to function - Type: Dict
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :param file_name: Name of file to retrieve data from - Type: String
+    :param expected_message: The error message that is expected from the test
+    - Type: String
     :return Test Pass/Fail
     """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        if "data" in runtime_variables["RuntimeVariables"].keys():
-            with open(file_name, "r") as file:
-                test_data = file.read()
-            runtime_variables["RuntimeVariables"]["data"] = test_data
-        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
-            lambda_function.lambda_handler(runtime_variables, context_object)
-        assert "AWS Error" in exc_info.value.error_message
-
-
-def method_client_error(lambda_function, runtime_variables,
-                        environment_variables, file_name):
-    """
-    Function to trigger a client error in a method.
-    By not mocking any of the boto3 functions, once any are used in code they will
-    trigger client error due to lack of credentials.
-    If used on a method, data is part of the runtime_variables, so the file_name is loaded
-    in and the file added to the runtime_variables dictionary.
-    :param lambda_function: Lambda function to test - Type: Function
-    :param runtime_variables: Runtime variables to send to function - Type: Dict
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :param file_name: Name of file to retrieve data from - Type: String
-    :return Test Pass/Fail
-    """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        if "data" in runtime_variables["RuntimeVariables"].keys():
-            with open(file_name, "r") as file:
-                test_data = file.read()
-            runtime_variables["RuntimeVariables"]["data"] = test_data
-
-        output = lambda_function.lambda_handler(runtime_variables, context_object)
-
+    output = lambda_function.lambda_handler(runtime_variables, context_object)
     assert 'error' in output.keys()
-    assert output["error"].__contains__("""AWS Error""")
+    assert expected_message in output["error"]
+
+
+def wrangler_assert(lambda_function, runtime_variables, expected_message):
+    """
+    Function to perform sad path assertion on wrangler
+    (method sad path is different to wrangler)
+
+    Runs function and asserts that exception is raised, then checks the contents.
+    :param lambda_function: Lambda function to test - Type: Function
+    :param runtime_variables: Runtime variables to send to function - Type: Dict
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :return Test Pass/Fail
+    """
+    with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+        lambda_function.lambda_handler(runtime_variables, context_object)
+    assert expected_message in exc_info.value.error_message
+
+
+def client_error(lambda_function, runtime_variables,
+                 environment_variables, file_name,
+                 expected_message, assertion):
+    """
+    Function to trigger a client error in a function.
+    By not mocking any of the boto3 functions, once any are used in code they will
+    trigger client error due to lack of credentials.
+
+    If used on a method, data is part of the runtime_variables, so the file_name is loaded
+    in and the file added to the runtime_variables dictionary.
+    :param lambda_function: Lambda function to test - Type: Function
+    :param runtime_variables: Runtime variables to send to function - Type: Dict
+    :param environment_variables: Environment Vars to send to function - Type: Dict
+    :param file_name: Name of file to retrieve data from - Type: String
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :param assertion: Type of assertion to use - Type: Function
+    :return Test Pass/Fail
+    """
+    with mock.patch.dict(lambda_function.os.environ, environment_variables):
+        if "data" in runtime_variables["RuntimeVariables"].keys():
+            with open(file_name, "r") as file:
+                test_data = file.read()
+            runtime_variables["RuntimeVariables"]["data"] = test_data
+        assertion(lambda_function, runtime_variables, expected_message)
 
 
 def create_bucket(bucket_name):
@@ -99,8 +109,9 @@ def create_client(client_type, region="eu-west-2"):
     return client
 
 
-def wrangler_general_error(lambda_function, runtime_variables,
-                           environment_variables, mockable_function):
+def general_error(lambda_function, runtime_variables,
+                  environment_variables, mockable_function,
+                  expected_message, assertion):
     """
     Function to trigger a general error in a given wrangler.
 
@@ -112,39 +123,16 @@ def wrangler_general_error(lambda_function, runtime_variables,
     :param environment_variables: Environment Vars to send to function - Type: Dict
     :param mockable_function: The function in the code to mock out
             (and attach side effect to) - Type: String
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :param assertion: Type of assertion to use - Type: Function
     :return Test Pass/Fail
     """
     with mock.patch(mockable_function) as mock_schema:
         mock_schema.side_effect = Exception("Failed To Log")
 
         with mock.patch.dict(lambda_function.os.environ, environment_variables):
-            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
-                lambda_function.lambda_handler(runtime_variables, context_object)
-            assert "General Error" in exc_info.value.error_message
-
-
-def method_general_error(lambda_function, runtime_variables,
-                         environment_variables, mockable_function):
-    """
-    Function to trigger a general error in a given method.
-    The variable 'mockable_function' defines the function in the lambda that will
-    be mocked out. This should be something fairly early in the code (but still
-    within try/except). e.g. "enrichment_wrangler.EnvironSchema"
-    :param lambda_function: Lambda function to test - Type: Function
-    :param runtime_variables: Runtime variables to send to function - Type: Dict
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :param mockable_function: The function in the code to mock out
-            (and attach side effect to) - Type: String
-    :return Test Pass/Fail
-    """
-    with mock.patch(mockable_function) as mock_schema:
-        mock_schema.side_effect = Exception("Failed To Log")
-
-        with mock.patch.dict(lambda_function.os.environ, environment_variables):
-            output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""General Error""")
+            assertion(lambda_function, runtime_variables, expected_message)
 
 
 def incomplete_read_error(lambda_function, runtime_variables,
@@ -183,43 +171,26 @@ def incomplete_read_error(lambda_function, runtime_variables,
             assert "Incomplete Lambda response" in exc_info.value.error_message
 
 
-def wrangler_key_error(lambda_function, environment_variables,
-                       runtime_variables=bad_runtime_variables):
-    """
-    Function to trigger a key error in a given wrangler.
-
-    Makes use of an empty dict of runtime variables,
-    which triggers a key error once access is attempted.
-
-    :param lambda_function: Lambda function to test - Type: Function
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :param runtime_variables: Runtime variables to send to function
-                            (default is empty dict) - Type: Dict
-    :return Test Pass/Fail
-    """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
-            lambda_function.lambda_handler(runtime_variables, context_object)
-    assert "Key Error" in exc_info.value.error_message
-
-
-def method_key_error(lambda_function, environment_variables,
-                     runtime_variables=bad_runtime_variables):
+def key_error(lambda_function,
+              environment_variables,
+              expected_message, assertion,
+              runtime_variables=bad_runtime_variables,
+              ):
     """
     Function to trigger a key error in a given method.
     Makes use of an empty dict of runtime variables,
     which triggers a key error once access is attempted.
     :param lambda_function: Lambda function to test - Type: Function
     :param environment_variables: Environment Vars to send to function - Type: Dict
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :param assertion: Type of assertion to use - Type: Function
     :param runtime_variables: Runtime variables to send to function
                             (default is empty dict) - Type: Dict
     :return Test Pass/Fail
     """
     with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output["error"].__contains__("""Key Error""")
+        assertion(lambda_function, runtime_variables, expected_message)
 
 
 def wrangler_method_error(lambda_function, runtime_variables,
@@ -317,38 +288,20 @@ def upload_files(client, bucket_name, file_list):
     return client
 
 
-def wrangler_value_error(lambda_function, runtime_variables=bad_runtime_variables,
-                         environment_variables=bad_environment_variables):
-    """
-    Function to trigger a value error in a given wrangler.
-
-    Does so by passing an empty list of environment variables
-    to trigger an error with marshmallow.
-
-    :param lambda_function: Lambda function to test - Type: Function
-    :param runtime_variables: Runtime variables to send to function - Type: Dict
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :return Test Pass/Fail
-    """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
-            lambda_function.lambda_handler(runtime_variables, context_object)
-    assert "Parameter Validation Error" in exc_info.value.error_message
-
-
-def method_value_error(lambda_function, runtime_variables=bad_runtime_variables,
-                       environment_variables=bad_environment_variables):
+def value_error(lambda_function, expected_message, assertion,
+                runtime_variables=bad_runtime_variables,
+                environment_variables=bad_environment_variables):
     """
     Function to trigger a value error in a given method.
     Does so by passing an empty list of environment variables
     to trigger an error with marshmallow.
     :param lambda_function: Lambda function to test - Type: Function
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :param assertion: Type of assertion to use - Type: Function
     :param runtime_variables: Runtime variables to send to function - Type: Dict
     :param environment_variables: Environment Vars to send to function - Type: Dict
     :return Test Pass/Fail
     """
     with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        output = lambda_function.lambda_handler(runtime_variables, context_object)
-
-    assert 'error' in output.keys()
-    assert output['error'].__contains__("""Parameter Validation Error""")
+        assertion(lambda_function, runtime_variables, expected_message)

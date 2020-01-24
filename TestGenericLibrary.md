@@ -1,6 +1,11 @@
 # Test Generic Library <a name='top'>
 [Back](README.md)
 ## Contents
+### Assertions
+[Method Assert](#methodassert)<br>
+[Wrangler Assert](#wranglerassert)<br><br>
+
+### Functions
 [Client Error](#clienterror)<br>
 [Create Bucket](#createbucket)<br>
 [Create Client](#createclient)<br>
@@ -13,31 +18,84 @@
 [Value Error](#valueerror)<br>
 [Wrangler Method Error](#methoderror)<br>
 
+
+## Assertions
+Because the wrangler and method behave differently in sad path, we have to use different types of assertion to ensure they behave correctly. To do this, we pass a specific assertion into the generic methods.
+
+### Method Assert <a name='methodassert'>
+Function to perform sad path assertion on methods<br>
+    (method sad path is different to wrangler)<br>
+Runs function to get output, then checks output.
+
+#### Parameters:
+lambda_function: Lambda function to test - Type: Function<br>
+runtime_variables: Runtime variables to send to function - Type: Dict<br>
+expected_message: The error message that is expected from the test - Type: String
+
+#### Return
+Test Pass/Fail
+
+#### Usage
+```
+# Passed in to test:
+test_generic_library.client_error(which_lambda, which_runtime_variables,
+                                      which_environment_variables, which_data,
+                                      expected_message, assertion)
+------
+# Within test:
+assertion(lambda_function, runtime_variables, expected_message)
+
+```
+[Back to top](#top)
+<hr>
+
+### Wrangler Assert <a name='wranglerassert'>
+Function to perform sad path assertion on wrangler<br>
+    (method sad path is different to wrangler)<br>
+    Runs function and asserts that exception is raised, then checks the contents.
+#### Parameters:
+lambda_function: Lambda function to test - Type: Function<br>
+runtime_variables: Runtime variables to send to function - Type: Dict<br>
+expected_message: The error message that is expected from the test - Type: String
+
+#### Return
+Test Pass/Fail
+
+#### Usage
+```
+# Passed in to test:
+test_generic_library.client_error(which_lambda, which_runtime_variables,
+                                      which_environment_variables, which_data,
+                                      expected_message, assertion)
+------
+# Within test:
+assertion(lambda_function, runtime_variables, expected_message)
+
+```
+[Back to top](#top)
+<hr>
+
 ## Functions
+
 ### Client Error <a name='clienterror'>
 Function to trigger a client error in a lambda. By not mocking any of the boto3 functions, once any are used in code they will trigger client error due to lack of credentials.<br><br>
 
 If used on a method, data is part of the runtime_variables, so the file_name is loaded in
 and the file added to the runtime_variables dictionary.
 
-#### Variants:
-wrangler_client_error()<br>
-method_client_error()
-
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 runtime_variables: Runtime variables to send to function - Type: Dict<br>
 environment_variables: Environment Vars to send to function - Type: Dict<br>
 file_name: Name of file to retrieve data from - Type: String<br>
+expected_message: The error message that is expected from the test - Type: String<br>
+assertion: Type of assertion to use - Type: Function
 
 #### Return: 
 Test Pass/Fail<br>
 #### Usage:
 ```
-test_generic_library.method_client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data)
-
-test_generic_library.wrangler_client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data)
-
+test_generic_library.client_error(which_lambda, which_runtime_variables, which_environment_variables, which_data, expected_message, assertion)
 ```
 
 [Back to top](#top)
@@ -89,27 +147,20 @@ The variable 'mockable_function' defines the function in the lambda that will
 be mocked out. This should be something fairly early in the code (but still
 within try/except). e.g. "enrichment_wrangler.EnvironSchema"
 
-#### Variants:
-wrangler_general_error()<br>
-method_general_error()
-
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 runtime_variables: Runtime variables to send to function - Type: Dict<br>
 environment_variables: Environment Vars to send to function - Type: Dict<br>
 mockable_function: The function in the code to mock out (and attach side effect to) - Type: String<br>
+expected_message: The error message that is expected from the test - Type: String<br>
+assertion: Type of assertion to use - Type: Function
 
 #### Return:
 Test Pass/Fail
 
 #### Usage:
 ```
-test_generic_library.method_general_error(which_lambda, which_runtime_variables,
-                                           which_environment_variables, mockable_function)
-
-test_generic_library.wrangler_general_error(which_lambda, which_runtime_variables,
-                                           which_environment_variables, mockable_function)
-
+test_generic_library.general_error(which_lambda, which_runtime_variables, which_environment_variables, mockable_function, expected_message, assertion)
 ```
 
 [Back to top](#top)
@@ -149,13 +200,11 @@ Function to trigger a key error in a given lambda.<br><bR>
 Makes use of an empty dict of runtime variables,<br>
 which triggers a key error once access is attempted.
 
-#### Variants:
-wrangler_value_error()<br>
-method_value_error()
-
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
 environment_variables: Environment Vars to send to function - Type: Dict<br>
+expected_message: The error message that is expected from the test - Type: String<br>
+assertion: Type of assertion to use - Type: Function<br>
 runtime_variables: Runtime variables to send to function(default is empty dict) - Type: Dict
 
 #### Return:
@@ -163,10 +212,7 @@ Test Pass/Fail
 
 #### Usage:
 ```
-test_generic_library.wrangler_key_error(which_lambda, which_environment_variables, bad_runtime_variables)
-
-test_generic_library.method_key_error(which_lambda, which_environment_variables, bad_runtime_variables)
-
+test_generic_library.key_error(which_lambda, expected_message, assertion, which_environment_variables)
 ```
 
 [Back to top](#top)
@@ -249,12 +295,11 @@ Function to trigger a value error in a given function.<br><br>
 Does so by passing an empty list of environment variables
 to trigger an error with marshmallow.
 
-#### Variants:
-wrangler_value_error()<br>
-method_value_error()
 
 #### Parameters:
 lambda_function: Lambda function to test - Type: Function<br>
+expected_message: The error message that is expected from the test - Type: String<br>
+assertion: Type of assertion to use - Type: Function<br>
 runtime_variables: Runtime variables to send to function - Type: Dict<br>
 environment_variables: Environment Vars to send to function - Type: Dict
 
@@ -263,9 +308,7 @@ Test Pass/Fail
 
 #### Usage:
 ```
-test_generic_library.method_value_error(which_lambda, bad_runtime_variables, bad_environment_variables)
-
-test_generic_library.wrangler_value_error(which_lambda, bad_runtime_variables, bad_environment_variables)
+test_generic_library.value_error(which_lambda, expected_message, assertion)
 ```
 
 [Back to top](#top)
