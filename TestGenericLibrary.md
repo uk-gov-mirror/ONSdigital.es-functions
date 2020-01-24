@@ -2,8 +2,8 @@
 [Back](README.md)
 ## Contents
 ### Assertions
-[Method_Assert](#methodassert)<br>
-[Wrangler_Assert](#wranglerassert)<br><br>
+[Method Assert](#methodassert)<br>
+[Wrangler Assert](#wranglerassert)<br><br>
 
 ### Functions
 [Client Error](#clienterror)<br>
