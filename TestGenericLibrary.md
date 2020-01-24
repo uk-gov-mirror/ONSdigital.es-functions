@@ -2,7 +2,7 @@
 [Back](README.md)
 ## Contents
 ### Assertions
-[Method Assert](#methodassert)<br>
+[Method_Assert](#methodassert)<br>
 [Wrangler_Assert](#wranglerassert)<br><br>
 
 ### Functions
