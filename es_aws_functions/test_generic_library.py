@@ -21,33 +21,6 @@ bad_runtime_variables = {
 context_object = MockContext()
 
 
-def client_error(lambda_function, runtime_variables,
-                 environment_variables, file_name,
-                 expected_message, assertion):
-    """
-    Function to trigger a client error in a function.
-    By not mocking any of the boto3 functions, once any are used in code they will
-    trigger client error due to lack of credentials.
-
-    If used on a method, data is part of the runtime_variables, so the file_name is loaded
-    in and the file added to the runtime_variables dictionary.
-    :param lambda_function: Lambda function to test - Type: Function
-    :param runtime_variables: Runtime variables to send to function - Type: Dict
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :param file_name: Name of file to retrieve data from - Type: String
-    :param expected_message: The error message that is expected from the test
-    - Type: String
-    :param assertion: Type of assertion to use - Type: Function
-    :return Test Pass/Fail
-    """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        if "data" in runtime_variables["RuntimeVariables"].keys():
-            with open(file_name, "r") as file:
-                test_data = file.read()
-            runtime_variables["RuntimeVariables"]["data"] = test_data
-        assertion(lambda_function, runtime_variables, expected_message)
-
-
 def method_assert(lambda_function, runtime_variables, expected_message):
     """
     Function to perform sad path assertion on methods
@@ -80,6 +53,33 @@ def wrangler_assert(lambda_function, runtime_variables, expected_message):
     with pytest.raises(exception_classes.LambdaFailure) as exc_info:
         lambda_function.lambda_handler(runtime_variables, context_object)
     assert expected_message in exc_info.value.error_message
+
+
+def client_error(lambda_function, runtime_variables,
+                 environment_variables, file_name,
+                 expected_message, assertion):
+    """
+    Function to trigger a client error in a function.
+    By not mocking any of the boto3 functions, once any are used in code they will
+    trigger client error due to lack of credentials.
+
+    If used on a method, data is part of the runtime_variables, so the file_name is loaded
+    in and the file added to the runtime_variables dictionary.
+    :param lambda_function: Lambda function to test - Type: Function
+    :param runtime_variables: Runtime variables to send to function - Type: Dict
+    :param environment_variables: Environment Vars to send to function - Type: Dict
+    :param file_name: Name of file to retrieve data from - Type: String
+    :param expected_message: The error message that is expected from the test
+    - Type: String
+    :param assertion: Type of assertion to use - Type: Function
+    :return Test Pass/Fail
+    """
+    with mock.patch.dict(lambda_function.os.environ, environment_variables):
+        if "data" in runtime_variables["RuntimeVariables"].keys():
+            with open(file_name, "r") as file:
+                test_data = file.read()
+            runtime_variables["RuntimeVariables"]["data"] = test_data
+        assertion(lambda_function, runtime_variables, expected_message)
 
 
 def create_bucket(bucket_name):
