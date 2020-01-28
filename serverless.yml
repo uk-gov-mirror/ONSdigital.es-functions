@@ -1,3 +1,4 @@
+---
 service: results
 provider:
   name: aws
@@ -10,7 +11,7 @@ layers:
   pythonlayer:
     path: layer/
     name: ${self:provider.stage}-es-common-functions
-    compatibleRuntimes: # A list of runtime environments this layer is compatible with.
+    compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
       - python3.7
       - python3.6
     retain: true
