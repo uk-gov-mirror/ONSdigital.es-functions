@@ -245,7 +245,7 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
     :return data: Data from file - Type: Dataframe
     :return receipt: Int to simulate message receipt - Type: Int
     """
-    data = aws_functions.read_dataframe_from_s3(bucket_name, in_file_name, run_id)
+    data = aws_functions.read_dataframe_from_s3(bucket_name, in_file_name)
 
     return data, 999
 
