@@ -229,7 +229,7 @@ def wrangler_method_error(lambda_function, runtime_variables,
 
 
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
-                              in_file_name, incoming_message_group):
+                              in_file_name, incoming_message_group, run_id):
     """
     Function to replace the aws-functions.get_dataframe when performing tests.
 
@@ -245,13 +245,13 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
     :return data: Data from file - Type: Dataframe
     :return receipt: Int to simulate message receipt - Type: Int
     """
-    data = aws_functions.read_dataframe_from_s3(bucket_name, in_file_name)
+    data = aws_functions.read_dataframe_from_s3(bucket_name, in_file_name, run_id)
 
     return data, 999
 
 
 def replacement_save_data(bucket_name, file_name, data,
-                          sqs_queue_url, sqs_message_id):
+                          sqs_queue_url, sqs_message_id, run_id):
     """
     Function to replace the aws-functions.save_data when performing tests.
 
