@@ -162,7 +162,7 @@ def read_dataframe_from_s3(bucket_name, file_name, run_id=""):
     :param run_id: Optional, run id to be added as file name prefix - Type: String
     :return: input_file: The JSON file in S3 loaded into dataframe table - Type: DataFrame
     """
-    input_file = read_from_s3(bucket_name, file_name)
+    input_file = read_from_s3(bucket_name, file_name, run_id)
     json_content = json.loads(input_file)
     return pd.DataFrame(json_content)
 
