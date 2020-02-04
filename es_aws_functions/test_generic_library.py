@@ -229,7 +229,7 @@ def wrangler_method_error(lambda_function, runtime_variables,
 
 
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
-                              in_file_name, incoming_message_group, run_id):
+                              in_file_name, incoming_message_group, run_id=""):
     """
     Function to replace the aws-functions.get_dataframe when performing tests.
 
