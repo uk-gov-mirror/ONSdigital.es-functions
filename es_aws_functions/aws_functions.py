@@ -69,13 +69,14 @@ def get_data(queue_url, bucket_name, key, incoming_message_group, run_id=""):
     ):
         bucket = bucket_name
         key = key
+        data = read_from_s3(bucket, key)
     else:
         message = response["Messages"][0]
         receipt_handle = message["ReceiptHandle"]
         message = json.loads(message["Body"])
         bucket = message["bucket"]
         key = message["key"]
-    data = read_from_s3(bucket, key, run_id)
+        data = read_from_s3(bucket, key, run_id)
     return data, receipt_handle
 
 
