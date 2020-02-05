@@ -1,3 +1,6 @@
+import math
+
+
 def calculate_adjacent_periods(current_period, periodicity):
     """
     Description: This method uses periodicity to calculate
@@ -40,3 +43,15 @@ def calculate_adjacent_periods(current_period, periodicity):
         last_period = str(last_year) + str(last_month)
 
     return last_period
+
+
+def sas_round(num):
+    """
+    Description: Replicates the sas rounding method by not rounding to nearest even.
+    :param num: Decimal number to round - Type: Float
+    :return num: Rounded number - Type: Int
+    """
+    if (num % 1 >= 0.5):
+        return math.ceil(num)
+    else:
+        return math.floor(num)
