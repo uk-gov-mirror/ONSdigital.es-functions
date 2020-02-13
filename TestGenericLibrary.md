@@ -14,6 +14,7 @@
 [Key Error](#keyerror)<br>
 [Replacement Get Dataframe](#replacementgetdataframe)<br>
 [Replacement Save Data](#replacementsavedata)<br>
+[Replacement Save To S3](#replacementsavetos3)<br>
 [Upload Files](#uploadfiles)<br>
 [Value Error](#valueerror)<br>
 [Wrangler Method Error](#methoderror)<br>
@@ -256,14 +257,38 @@ bucket_name: Name of bucket. Unused.<br>
 file_name: Name of file to save in tests/fixtures - Type: String<br>
 data: Data to save - Type: Json String<br>
 sqs_queue_url: Name of sqs queue. Unused<br>
-sqs_message_id: Name of message group. Unused
+sqs_message_id: Name of message group. Unused<br>
+run_id: ID to identify the run. Unused
 
 #### Return:
 -
 
 #### Usage:
 ```
-test_generic_library.replacement_save_data("", "file_1.json", '{"key": "value"}'}, "", "")
+test_generic_library.replacement_save_data("", "file_1.json", '{"key": "value"}'}, "", "", "")
+```
+
+[Back to top](#top)
+<hr>
+
+### Replacement Save To S3 <a name='replacementsavetos3'> 
+Function to replace the aws-functions.save_data when performing tests.<br><br>
+
+Saves a copy of the file locally.<br><br>
+
+Takes the same parameters as save_data, but only uses file_name and data.
+#### Parameters:
+bucket_name: Name of bucket. Unused.<br>
+file_name: Name of file to save in tests/fixtures - Type: String<br>
+data: Data to save - Type: Json String<br>
+run_id: ID to identify the run. Unused
+
+#### Return:
+-
+
+#### Usage:
+```
+test_generic_library.replacement_save_to_s3("", "file_1.json", '{"key": "value"}'}, "")
 ```
 
 [Back to top](#top)
