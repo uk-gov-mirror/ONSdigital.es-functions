@@ -251,7 +251,7 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
 
 
 def replacement_save_data(bucket_name, file_name, data,
-                          sqs_queue_url, sqs_message_id, run_id):
+                          sqs_queue_url, sqs_message_id, run_id=""):
     """
     Function to replace the aws-functions.save_data when performing tests.
 
@@ -271,7 +271,7 @@ def replacement_save_data(bucket_name, file_name, data,
         f.close()
 
 
-def replacement_save_to_s3(bucket_name, file_name, data, run_id):
+def replacement_save_to_s3(bucket_name, file_name, data, run_id=""):
     """
     Function to replace the aws-functions.save_data when performing tests.
 
