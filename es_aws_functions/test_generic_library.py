@@ -251,7 +251,7 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
 
 
 def replacement_save_data(bucket_name, file_name, data,
-                          sqs_queue_url, sqs_message_id, run_id):
+                          sqs_queue_url, sqs_message_id, run_id=""):
     """
     Function to replace the aws-functions.save_data when performing tests.
 
@@ -263,6 +263,25 @@ def replacement_save_data(bucket_name, file_name, data,
     :param data: Data to save - Type: Json String
     :param sqs_queue_url: Name of sqs queue. Unused
     :param sqs_message_id: Name of message group. Unused
+    :param run_id: ID to identify the run. Unused
+    :return None
+    """
+    with open("tests/fixtures/" + file_name, 'w', encoding='utf-8') as f:
+        f.write(data)
+        f.close()
+
+
+def replacement_save_to_s3(bucket_name, file_name, data, run_id=""):
+    """
+    Function to replace the aws-functions.save_data when performing tests.
+
+    Saves a copy of the file locally.
+
+    Takes the same parameters as save_data, but only uses file_name and data.
+    :param bucket_name: Name of bucket. Unused.
+    :param file_name: Name of file to save in tests/fixtures - Type: String
+    :param data: Data to save - Type: Json String
+    :param run_id: ID to identify the run. Unused
     :return None
     """
     with open("tests/fixtures/" + file_name, 'w', encoding='utf-8') as f:
