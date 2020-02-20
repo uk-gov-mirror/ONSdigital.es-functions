@@ -23,7 +23,7 @@ def delete_data(bucket_name, file_name, run_id="", file_extension=".json"):
     try:
         full_file_name = file_name + file_extension
         if len(run_id) > 0:
-            full_file_name = run_id + "-" + file_name
+            full_file_name = run_id + "-" + full_file_name
 
         s3.Object(bucket_name, full_file_name).load()
         s3.Object(bucket_name, full_file_name).delete()
@@ -181,7 +181,7 @@ def read_from_s3(bucket_name, file_name, run_id="", file_extension=".json"):
 
     full_file_name = file_name + file_extension
     if len(run_id) > 0:
-        full_file_name = run_id + "-" + file_name
+        full_file_name = run_id + "-" + full_file_name
 
     s3_object = s3.Object(bucket_name, full_file_name)
     input_file = s3_object.get()["Body"].read().decode("UTF-8")
@@ -225,7 +225,7 @@ def save_to_s3(bucket_name, output_file_name, output_data, run_id="", file_exten
 
     full_file_name = output_file_name + file_extension
     if len(run_id) > 0:
-        full_file_name = run_id + "-" + output_file_name
+        full_file_name = run_id + "-" + full_file_name
 
     s3.Object(bucket_name, full_file_name).put(Body=output_data,
                                                ContentType='application/json')
@@ -309,7 +309,7 @@ def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id="", file_ex
 
     full_file_name = file_name + file_extension
     if len(run_id) > 0:
-        full_file_name = run_id + "-" + file_name
+        full_file_name = run_id + "-" + full_file_name
 
     s3_resource.Object(bucket_name, full_file_name).put(Body=csv_buffer.getvalue(),
                                                         ContentType='text/plain')
