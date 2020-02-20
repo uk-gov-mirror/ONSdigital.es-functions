@@ -1,6 +1,6 @@
 import math
-import traceback
 import sys
+import traceback
 
 
 def calculate_adjacent_periods(current_period, periodicity):
