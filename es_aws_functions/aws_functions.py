@@ -226,6 +226,24 @@ def save_data(bucket_name, file_name, data, queue_url, message_id, run_id="",
     send_sqs_message(queue_url, sqs_message, message_id)
 
 
+def save_dataframe_to_csv(dataframe, bucket_name, file_name, run_id="",
+                           file_extension=".csv"):
+    """
+    This function takes a Dataframe and stores it in a specific bucket.
+    :param dataframe: The Dataframe you wish to save - Type: Dataframe.
+    :param bucket_name: Name of the bucket you wish to save the csv into - Type: String.
+    :param file_name: The name given to the CSV - Type: String.
+    :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
+    :return: None
+    """
+    csv_buffer = StringIO()
+    dataframe.to_csv(csv_buffer, sep=",", index=False)
+    data = csv_buffer.getvalue()
+
+    save_to_s3(bucket_name, file_name, data, run_id, file_extension)
+
+
 def save_to_s3(bucket_name, output_file_name, output_data, run_id="",
                file_extension=".json"):
     """
@@ -308,21 +326,3 @@ def send_sqs_message(queue_url, message, output_message_id):
         MessageGroupId=output_message_id,
         MessageDeduplicationId=str(random.getrandbits(128)),
     )
-
-
-def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id="",
-                           file_extension=".csv"):
-    """
-    This function takes a Dataframe and stores it in a specific bucket.
-    :param dataframe: The Dataframe you wish to save - Type: Dataframe.
-    :param bucket_name: Name of the bucket you wish to save the csv into - Type: String.
-    :param file_name: The name given to the CSV - Type: String.
-    :param run_id: Optional, run id to be added as file name prefix - Type: String
-    :param file_extension: The file extension that the submitted file should have.
-    :return: None
-    """
-    csv_buffer = StringIO()
-    dataframe.to_csv(csv_buffer, sep=",", index=False)
-    data = csv_buffer.getvalue()
-
-    save_to_s3(bucket_name, file_name, data, run_id, file_extension)
