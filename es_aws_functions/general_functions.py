@@ -47,21 +47,10 @@ def calculate_adjacent_periods(current_period, periodicity):
     return last_period
 
 
-def sas_round(num):
-    """
-    Description: Replicates the sas rounding method by not rounding to nearest even.
-    :param num: Decimal number to round - Type: Float
-    :return num: Rounded number - Type: Int
-    """
-    if (num % 1 >= 0.5):
-        return math.ceil(num)
-    else:
-        return math.floor(num)
-
-
 def handle_exception(exception, module, context=None):
     """
-    Description:
+    Description: Generates an error message from an exception.
+    Returns an error message detailing exception type, arguments, and line number.
     :param exception: Exception that has occurred - Type: Exception
     :param module: Name of current module - Type: String
     :param context: AWS Context object
@@ -75,3 +64,15 @@ def handle_exception(exception, module, context=None):
         error_message += " | Request ID: " + str(context.aws_request_id)
     error_message += " Line number: " + str(tb[1])
     return error_message
+
+
+def sas_round(num):
+    """
+    Description: Replicates the sas rounding method by not rounding to nearest even.
+    :param num: Decimal number to round - Type: Float
+    :return num: Rounded number - Type: Int
+    """
+    if (num % 1 >= 0.5):
+        return math.ceil(num)
+    else:
+        return math.floor(num)

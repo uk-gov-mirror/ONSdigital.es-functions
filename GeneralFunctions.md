@@ -2,6 +2,7 @@
 [Back](README.md)
 ## Contents
 [Calculate Adjacent Periods](#calculateadjacentperiods)<br>
+[Handle Exception](#handleexception)<br>
 [Sas Round](#sasround)<br>
 ## Functions
 ### Calculate Adjacent Periods <a name='calculateadjacentperiods'>
@@ -19,6 +20,31 @@ Period: Format YYYYMM of the previous period. Type: String. <br>
 general_function.calculate_adjacent_periods("201606", "03")
 ```
 
+[Back to top](#top)
+<hr>
+
+### Handle Exception <a name='handleexception'>
+Generates an error message from an exception.
+Returns an error message detailing exception type, arguments, and line number.
+#### Parameters:
+exception: Exception that has occurred - Type: Exception<br>
+module: Name of current module - Type: String<br>
+context: AWS Context object<br>
+    (has default so that moving to glue will not require lots of changes)
+#### Return:
+error_message: Error message generated for exception - Type: String
+
+#### Usage:
+```
+try:
+    myfunc()
+except Exception as e:
+    print(general_functions.handle_exception(e, 'mikemodule', context))
+    
+    ------------------
+    
+    logger.info(general_functions.handle_exception(e, 'mikemodule'))```
+```
 [Back to top](#top)
 <hr>
 
