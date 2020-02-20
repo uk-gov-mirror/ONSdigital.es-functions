@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 from es_aws_functions import exception_classes
 
 
-def delete_data(bucket_name, file_name, run_id=""):
+def delete_data(bucket_name, file_name, run_id="", file_extension=".json"):
     """
     Deletes specified file from specified S3 bucket.
     Checks if file exists before deletion.
@@ -17,13 +17,14 @@ def delete_data(bucket_name, file_name, run_id=""):
     :param bucket_name: The name of the bucket containing the file - Type: String
     :param file_name: The name of the file being deleted - Type: String
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return: Success or error message - Type: String
     """
     s3 = boto3.resource('s3', region_name='eu-west-2')
     try:
-        full_file_name = file_name
+        full_file_name = file_name + file_extension
         if len(run_id) > 0:
-            full_file_name = run_id + "-" + file_name
+            full_file_name = run_id + "-" + full_file_name
 
         s3.Object(bucket_name, full_file_name).load()
         s3.Object(bucket_name, full_file_name).delete()
@@ -168,20 +169,21 @@ def read_dataframe_from_s3(bucket_name, file_name, run_id=""):
     return pd.DataFrame(json_content)
 
 
-def read_from_s3(bucket_name, file_name, run_id=""):
+def read_from_s3(bucket_name, file_name, run_id="", file_extension=".json"):
     """
     Given the name of the bucket and the filename(key), this function will
     return a file. File is JSON format.
     :param bucket_name: Name of the S3 bucket - Type: String
     :param file_name: Name of the file - Type: String
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return: input_file: The JSON file in S3 - Type: String
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
 
-    full_file_name = file_name
+    full_file_name = file_name + file_extension
     if len(run_id) > 0:
-        full_file_name = run_id + "-" + file_name
+        full_file_name = run_id + "-" + full_file_name
 
     s3_object = s3.Object(bucket_name, full_file_name)
     input_file = s3_object.get()["Body"].read().decode("UTF-8")
@@ -212,20 +214,22 @@ def save_data(bucket_name, file_name, data, queue_url, message_id, run_id=""):
     send_sqs_message(queue_url, sqs_message, message_id)
 
 
-def save_to_s3(bucket_name, output_file_name, output_data, run_id=""):
+def save_to_s3(bucket_name, output_file_name, output_data, run_id="",
+               file_extension=".json"):
     """
     This function uploads a specified set of data to the s3 bucket under the given name.
     :param bucket_name: Name of the bucket you wish to upload too - Type: String.
     :param output_file_name: Name you want the file to be called on s3 - Type: String.
     :param output_data: The data that you wish to upload to s3 - Type: JSON.
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return: None
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
 
-    full_file_name = output_file_name
+    full_file_name = output_file_name + file_extension
     if len(run_id) > 0:
-        full_file_name = run_id + "-" + output_file_name
+        full_file_name = run_id + "-" + full_file_name
 
     s3.Object(bucket_name, full_file_name).put(Body=output_data,
                                                ContentType='application/json')
@@ -294,22 +298,24 @@ def send_sqs_message(queue_url, message, output_message_id):
     )
 
 
-def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id=""):
+def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id="",
+                           file_extension=".csv"):
     """
     This function takes a Dataframe and stores it in a specific bucket.
     :param dataframe: The Dataframe you wish to save - Type: Dataframe.
     :param bucket_name: Name of the bucket you wish to save the csv into - Type: String.
     :param file_name: The name given to the CSV - Type: String.
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return: None
     """
     csv_buffer = StringIO()
     dataframe.to_csv(csv_buffer, sep=",", index=False)
     s3_resource = boto3.resource("s3")
 
-    full_file_name = file_name
+    full_file_name = file_name + file_extension
     if len(run_id) > 0:
-        full_file_name = run_id + "-" + file_name
+        full_file_name = run_id + "-" + full_file_name
 
     s3_resource.Object(bucket_name, full_file_name).put(Body=csv_buffer.getvalue(),
                                                         ContentType='text/plain')
