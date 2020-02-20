@@ -9,11 +9,11 @@
 [Read DataFrame From S3](#readdataframefroms3)<br>
 [Read From S3](#readfroms3)<br>
 [Save Data](#savedata)<br>
+[Save Dataframe To CSV](#savetocsv)<br>
 [Save To S3](#savetos3)<br>
 [Send SNS Message](#sendsnsmessage)<br>
 [Send SNS Message With Anomalies](#sendsnsmessageanomalies)<br>
 [Send SQS Message](#sendsqsmessage)<br>
-[Write Dataframe To CSV](#savetocsv)<br>
 ## Functions
 ### Delete Data <a name='deletedata'>
 Given the name of the bucket and the filename(key), this function will
@@ -193,6 +193,25 @@ aws_functions.save_data(bucket_name, file_name, str(final_output), queue_url, sq
 [Back to top](#top)
 <hr>
 
+### Save DataFrame To CSV <a name='savetocsv'>
+This function takes a Dataframe and stores it in a specific bucket.<br>
+
+#### Parameters:
+Dataframe: The Dataframe you wish to save - Type: Dataframe.<br>
+Bucket_name: Name of the bucket you wish to save the csv into - Type: String.<br>
+Output_data: Filename: The name given to the CSV - Type: String.<br>
+run_id: Optional, run id to be added as file name prefix - Type: String <br>
+
+#### Return:
+Nothing
+
+#### Usage:
+```
+aws_functions.write_dataframe_to_csv(dataframe, bucket_name, filename)
+```
+[Back to top](#top)
+<hr>
+
 ### Save To S3 <a name='savetos3'>
 This function uploads a specified set of data to the s3 bucket under the given name.<br>
 
@@ -270,25 +289,6 @@ aws_functions.send_sqs_message(queue_url, sqs_message, message_id)
 json_response = returned_data.get('Payload').read().decode("UTF-8")
 aws_functions.send_sqs_message(queue_url, json_response, "Strata")
 
-```
-[Back to top](#top)
-<hr>
-
-### Write DataFrame To CSV <a name='savetocsv'>
-This function takes a Dataframe and stores it in a specific bucket.<br>
-
-#### Parameters:
-Dataframe: The Dataframe you wish to save - Type: Dataframe.<br>
-Bucket_name: Name of the bucket you wish to save the csv into - Type: String.<br>
-Output_data: Filename: The name given to the CSV - Type: String.<br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
-
-#### Return:
-Nothing
-
-#### Usage:
-```
-aws_functions.write_dataframe_to_csv(dataframe, bucket_name, filename)
 ```
 [Back to top](#top)
 <hr>
