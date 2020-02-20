@@ -1,4 +1,6 @@
 import math
+import traceback
+import sys
 
 
 def calculate_adjacent_periods(current_period, periodicity):
@@ -55,3 +57,21 @@ def sas_round(num):
         return math.ceil(num)
     else:
         return math.floor(num)
+
+
+def handle_exception(exception, module, context=None):
+    """
+    Description:
+    :param exception: Exception that has occurred - Type: Exception
+    :param module: Name of current module - Type: String
+    :param context: AWS Context object
+    (has default so that moving to glue will not require lots of changes)
+    :return error_message: Error message generated for exception - Type: String
+    """
+    exc_type, exc_obj, exc_tb = sys.exc_info()
+    tb = traceback.extract_tb(exc_tb)[-1]
+    error_message = str(exc_type) + " in " + module + " |- " + str(exception.args)
+    if(context):
+        error_message += " | Request ID: " + str(context.aws_request_id)
+    error_message += " Line number: " + str(tb[1])
+    return error_message
