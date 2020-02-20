@@ -7,6 +7,11 @@ import pandas as pd
 from botocore.exceptions import ClientError
 from es_aws_functions import exception_classes
 
+extension_types = {
+    ".json": "application/json",
+    ".csv": "text/plain"
+}
+
 
 def delete_data(bucket_name, file_name, run_id="", file_extension=".json"):
     """
@@ -33,7 +38,8 @@ def delete_data(bucket_name, file_name, run_id="", file_extension=".json"):
         return "File does not exist in specified bucket!"
 
 
-def get_data(queue_url, bucket_name, key, incoming_message_group, run_id=""):
+def get_data(queue_url, bucket_name, key, incoming_message_group, run_id="",
+             file_extension=".json"):
     """
     Get data function recieves a message from an sqs queue,
     extracts the bucket and filename, then uses them to get the file from s3.
@@ -55,6 +61,7 @@ def get_data(queue_url, bucket_name, key, incoming_message_group, run_id=""):
     :param incoming_message_group: The name of the message group from previous
     module - Type: String
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return data: The data from s3 - Type: Json
     :return receipt_handle: The receipt_handle of the incoming message
     (used to delete old message) - Type: String
@@ -77,11 +84,12 @@ def get_data(queue_url, bucket_name, key, incoming_message_group, run_id=""):
         message = json.loads(message["Body"])
         bucket = message["bucket"]
         key = message["key"]
-        data = read_from_s3(bucket, key, run_id)
+        data = read_from_s3(bucket, key, run_id, file_extension)
     return data, receipt_handle
 
 
-def get_dataframe(queue_url, bucket_name, key, incoming_message_group, run_id=""):
+def get_dataframe(queue_url, bucket_name, key, incoming_message_group, run_id="",
+                  file_extension=".json"):
     """
     Get data function recieves a message from an sqs queue,
     extracts the bucket and filename, then uses them to get the file from s3.
@@ -103,12 +111,13 @@ def get_dataframe(queue_url, bucket_name, key, incoming_message_group, run_id=""
     :param incoming_message_group: The name of the message group from previous
     module - Type: String
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return data: The data from s3 - Type: DataFrame
     :return receipt_handle: The receipt_handle of the incoming message
     (used to delete old message) - Type: String
     """
     data, receipt_handle = get_data(queue_url, bucket_name, key,
-                                    incoming_message_group, run_id)
+                                    incoming_message_group, run_id, file_extension)
     data = pd.read_json(data, dtype=False)
     return data, receipt_handle
 
@@ -138,33 +147,34 @@ def get_sqs_messages(sqs_queue_url, number_of_messages, incoming_message_group):
     :param incoming_message_group: The message group of messages to collect.
     :return: Messages from queue - List of Json Strings
     """
-    messages = {}
-    messages["Messages"] = []
+    messages = {"Messages": []}
     # Grab 10 messages from queue
     responses = get_sqs_message(sqs_queue_url, 10)
     if "Messages" not in responses:
         raise exception_classes.NoDataInQueueError("No Messages in queue")
     # Loop through the messages to see if they fit criteria
     for response in responses['Messages']:
-        if (incoming_message_group in response['Attributes']['MessageGroupId']):
+        if incoming_message_group in response['Attributes']['MessageGroupId']:
             messages["Messages"].append(response)
-    if (len(messages['Messages']) < number_of_messages):
+    if len(messages['Messages']) < number_of_messages:
         raise exception_classes.DoNotHaveAllDataError(
             "Only " + str(len(messages["Messages"])) + " recieved"
         )
     return messages
 
 
-def read_dataframe_from_s3(bucket_name, file_name, run_id=""):
+def read_dataframe_from_s3(bucket_name, file_name, run_id="",
+                           file_extension=".json"):
     """
     Given the name of the bucket and the filename(key), this function will
     return contents of a file. File is DataFrame format.
     :param bucket_name: Name of the S3 bucket - Type: String
     :param file_name: Name of the file - Type: String
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return: input_file: The JSON file in S3 loaded into dataframe table - Type: DataFrame
     """
-    input_file = read_from_s3(bucket_name, file_name, run_id)
+    input_file = read_from_s3(bucket_name, file_name, run_id, file_extension)
     json_content = json.loads(input_file)
     return pd.DataFrame(json_content)
 
@@ -191,7 +201,8 @@ def read_from_s3(bucket_name, file_name, run_id="", file_extension=".json"):
     return input_file
 
 
-def save_data(bucket_name, file_name, data, queue_url, message_id, run_id=""):
+def save_data(bucket_name, file_name, data, queue_url, message_id, run_id="",
+              file_extension=".json"):
     """
     Save data function stores data in s3 and passes the bucket & filename
     onto sqs queue. SQS only supports message length of 256k, so this function
@@ -207,9 +218,10 @@ def save_data(bucket_name, file_name, data, queue_url, message_id, run_id=""):
     what module sent the message)
     - Type: String
     :param run_id: Optional, run id to be added as file name prefix - Type: String
+    :param file_extension: The file extension that the submitted file should have.
     :return: Nothing
     """
-    save_to_s3(bucket_name, file_name, data, run_id)
+    save_to_s3(bucket_name, file_name, data, run_id, file_extension)
     sqs_message = json.dumps({"bucket": bucket_name, "key": file_name})
     send_sqs_message(queue_url, sqs_message, message_id)
 
@@ -231,8 +243,8 @@ def save_to_s3(bucket_name, output_file_name, output_data, run_id="",
     if len(run_id) > 0:
         full_file_name = run_id + "-" + full_file_name
 
-    s3.Object(bucket_name, full_file_name).put(Body=output_data,
-                                               ContentType='application/json')
+    s3.Object(bucket_name, full_file_name).put(
+        Body=output_data, ContentType=extension_types[file_extension])
 
 
 def send_sns_message(checkpoint, sns_topic_arn, module_name):
@@ -311,11 +323,6 @@ def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id="",
     """
     csv_buffer = StringIO()
     dataframe.to_csv(csv_buffer, sep=",", index=False)
-    s3_resource = boto3.resource("s3")
+    data = csv_buffer.getvalue()
 
-    full_file_name = file_name + file_extension
-    if len(run_id) > 0:
-        full_file_name = run_id + "-" + full_file_name
-
-    s3_resource.Object(bucket_name, full_file_name).put(Body=csv_buffer.getvalue(),
-                                                        ContentType='text/plain')
+    save_to_s3(bucket_name, file_name, data, run_id, file_extension)
