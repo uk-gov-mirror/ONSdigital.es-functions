@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 from es_aws_functions import exception_classes
 
 
-def delete_data(bucket_name, file_name, run_id=""):
+def delete_data(bucket_name, file_name, run_id="", file_extension=".json"):
     """
     Deletes specified file from specified S3 bucket.
     Checks if file exists before deletion.
@@ -21,7 +21,7 @@ def delete_data(bucket_name, file_name, run_id=""):
     """
     s3 = boto3.resource('s3', region_name='eu-west-2')
     try:
-        full_file_name = file_name
+        full_file_name = file_name + file_extension
         if len(run_id) > 0:
             full_file_name = run_id + "-" + file_name
 
@@ -168,7 +168,7 @@ def read_dataframe_from_s3(bucket_name, file_name, run_id=""):
     return pd.DataFrame(json_content)
 
 
-def read_from_s3(bucket_name, file_name, run_id=""):
+def read_from_s3(bucket_name, file_name, run_id="", file_extension=".json"):
     """
     Given the name of the bucket and the filename(key), this function will
     return a file. File is JSON format.
@@ -179,7 +179,7 @@ def read_from_s3(bucket_name, file_name, run_id=""):
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
 
-    full_file_name = file_name
+    full_file_name = file_name + file_extension
     if len(run_id) > 0:
         full_file_name = run_id + "-" + file_name
 
@@ -212,7 +212,7 @@ def save_data(bucket_name, file_name, data, queue_url, message_id, run_id=""):
     send_sqs_message(queue_url, sqs_message, message_id)
 
 
-def save_to_s3(bucket_name, output_file_name, output_data, run_id=""):
+def save_to_s3(bucket_name, output_file_name, output_data, run_id="", file_extension=".json"):
     """
     This function uploads a specified set of data to the s3 bucket under the given name.
     :param bucket_name: Name of the bucket you wish to upload too - Type: String.
@@ -223,7 +223,7 @@ def save_to_s3(bucket_name, output_file_name, output_data, run_id=""):
     """
     s3 = boto3.resource("s3", region_name="eu-west-2")
 
-    full_file_name = output_file_name
+    full_file_name = output_file_name + file_extension
     if len(run_id) > 0:
         full_file_name = run_id + "-" + output_file_name
 
@@ -294,7 +294,7 @@ def send_sqs_message(queue_url, message, output_message_id):
     )
 
 
-def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id=""):
+def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id="", file_extension=".csv"):
     """
     This function takes a Dataframe and stores it in a specific bucket.
     :param dataframe: The Dataframe you wish to save - Type: Dataframe.
@@ -307,7 +307,7 @@ def write_dataframe_to_csv(dataframe, bucket_name, file_name, run_id=""):
     dataframe.to_csv(csv_buffer, sep=",", index=False)
     s3_resource = boto3.resource("s3")
 
-    full_file_name = file_name
+    full_file_name = file_name + file_extension
     if len(run_id) > 0:
         full_file_name = run_id + "-" + file_name
 
