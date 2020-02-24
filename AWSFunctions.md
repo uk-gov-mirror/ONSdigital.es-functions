@@ -23,7 +23,7 @@ error.
 #### Parameters:
 bucket_name: Name of the S3 bucket - Type: String <br>
 file_name: Name of the file - Type: String <br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Return:
 Success or error message - Type: String
@@ -49,7 +49,7 @@ queue_url: The url of the queue to retrieve message from - Type: String<br>
 bucket_name: The default bucket name to use if no message from previous module - Type: String<br>
 key: The default file name to use if no message from the previous module - Type: String<br>
 incoming_message_group: The name of the message group from previous module - Type: String (example: enrichmentOut <br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Returns:
 data: The data from s3 - Type: Json<br>
@@ -74,7 +74,7 @@ queue_url: The url of the queue to retrieve message from - Type: String<br>
 bucket_name: The default bucket name to use if no message from previous module - Type: String<br>
 key: The default file name to use if no message from the previous module - Type: String<br>
 incoming_message_group: The name of the message group from previous module - Type: String (example: enrichmentOut)<br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Returns:
 data: The data from s3 - Type: DataFrame<br>
@@ -136,7 +136,7 @@ return contents of a file. File is Dataframe format.
 #### Parameters:
 bucket_name: Name of the S3 bucket - Type: String <br>
 file_name: Name of the file - Type: String <br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Return:
 input_file: The JSON file in S3 - Type: String
@@ -155,7 +155,7 @@ return a file. File is JSON format.
 #### Parameters:
 bucket_name: Name of the S3 bucket - Type: String <br>
 file_name: Name of the file - Type: String <br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Return:
 input_file: The JSON file in S3 - Type: String
@@ -179,7 +179,7 @@ file_name: The name to give the file being saved - Type: String<br>
 data: The data to be saved - Type Json string<br>
 queue_url: The url of the queue to use in sending the file details - Type: String<br>
 message_id: The label of the message sent to sqs(Message_group_id, what module sent the message) - Type: String (example: enrichmentOut)<br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Return:
 Nothing
@@ -200,7 +200,7 @@ This function takes a Dataframe and stores it in a specific bucket.<br>
 Dataframe: The Dataframe you wish to save - Type: Dataframe.<br>
 Bucket_name: Name of the bucket you wish to save the csv into - Type: String.<br>
 Output_data: Filename: The name given to the CSV - Type: String.<br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Return:
 Nothing
@@ -219,7 +219,7 @@ This function uploads a specified set of data to the s3 bucket under the given n
 bucket_name: Name of the bucket you wish to upload too - Type: String.<br>
 output_file_name: Name you want the file to be called on s3 - Type: String.<br>
 output_data: The data that you wish to upload to s3 - Type: JSON string. - Note, this must be string<br>
-run_id: Optional, run id to be added as file name prefix - Type: String <br>
+file_prefix: Optional, run id to be added as file name prefix - Type: String <br>
 
 #### Return:
 Nothing
