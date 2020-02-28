@@ -194,10 +194,11 @@ def read_from_s3(bucket_name, file_name, file_prefix="", file_extension=".json")
     full_file_name = file_name + file_extension
     if len(file_prefix) > 0:
         full_file_name = file_prefix + full_file_name
-
-    s3_object = s3.Object(bucket_name, full_file_name)
-    input_file = s3_object.get()["Body"].read().decode("UTF-8")
-
+    try:
+        s3_object = s3.Object(bucket_name, full_file_name)
+        input_file = s3_object.get()["Body"].read().decode("UTF-8")
+    except Exception:
+        raise Exception(f"Could not find s3://{bucket_name}/{full_file_name}")
     return input_file
 
 
