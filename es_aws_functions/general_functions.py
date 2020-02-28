@@ -49,7 +49,8 @@ def calculate_adjacent_periods(current_period, periodicity):
 
 def handle_exception(exception, module, context=None):
     """
-    Description:
+    Description: Generates an error message from an exception.
+    Returns an error message detailing exception type, arguments, and line number.
     :param exception: Exception that has occurred - Type: Exception
     :param module: Name of current module - Type: String
     :param context: AWS Context object
