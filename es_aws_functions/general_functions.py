@@ -49,8 +49,7 @@ def calculate_adjacent_periods(current_period, periodicity):
 
 def handle_exception(exception, module, context=None):
     """
-    Description: Generates an error message from an exception.
-    Returns an error message detailing exception type, arguments, and line number.
+    Description:
     :param exception: Exception that has occurred - Type: Exception
     :param module: Name of current module - Type: String
     :param context: AWS Context object
@@ -60,9 +59,13 @@ def handle_exception(exception, module, context=None):
     exc_type, exc_obj, exc_tb = sys.exc_info()
     tb = traceback.extract_tb(exc_tb)[-1]
     error_message = str(exc_type) + " in " + module + " |- " + str(exception.args)
+    if("botocore" in str(type(exception))):
+        error_message += " | Extra details: " + str(exception.response["Error"]["Code"])
     if(context):
         error_message += " | Request ID: " + str(context.aws_request_id)
-    error_message += " Line number: " + str(tb[1])
+    error_message += " | Outer line number: " + str(exception.__traceback__.tb_lineno)
+    error_message += " | Inner Line number: " + str(tb[1]) + " in: " + str(tb[0])
+
     return error_message
 
 
