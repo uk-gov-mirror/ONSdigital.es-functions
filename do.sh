@@ -45,7 +45,7 @@ build() {
 deploy() {
   mkdir layer
   mkdir layer/python
-  cp -R es_functions layer/python/es_functions
+  cp -R es_aws_functions layer/python/es_functions
   serverless deploy
   rm -rf layer/
 }
