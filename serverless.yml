@@ -5,7 +5,7 @@ provider:
   runtime: python3.7
   region: eu-west-2
   deploymentBucket:
-    name: com.serverless.eu-west-2.results.ons.deploys
+    name: spp-results-sandbox-serverless
 
 layers:
   pythonlayer:
