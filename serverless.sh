@@ -13,6 +13,10 @@ apt-get install python3 -y
 which pip
 whereis pip
 
+which pip3
+whereis pip3
+
+
 cp -r /usr/local/lib/python3.7/site-packages pythonlayer
 cd pythonlayer
 mv site-packages/ python/
