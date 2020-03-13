@@ -9,7 +9,8 @@ cp -R es_aws_functions layer/python/es_aws_functions
 python3 -m site
 ls
 apt-get install python3 -y
-/usr/local/bin/pip3 install -r dev-requirements.txt
+
+/usr/lib/python3/dist-packages/pip install -r dev-requirements.txt
 ls /usr/local/lib/python3.7
 ls /usr/local/lib/python3.7/site-packages
 cp -r /usr/local/lib/python3.7/site-packages pythonlayer
