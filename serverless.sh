@@ -8,7 +8,7 @@ cp -R es_aws_functions layer/python/es_aws_functions
 
 
 find / -name "site-packages"
-cp -r /usr/local/lib/python3.7/site-packages/ pythonlayer
+cp -r /usr/local/lib/python3.7/site-packages/ pythonlayer/site-packages
 ls
 cd pythonlayer
 ls
