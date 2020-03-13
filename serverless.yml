@@ -8,9 +8,16 @@ provider:
     name: spp-results-sandbox-serverless
 
 layers:
-  pythonlayer:
+  funklayer:
     path: layer/
     name: ${self:provider.stage}-es-common-functions
+    compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
+      - python3.7
+      - python3.6
+    retain: true
+  pythonlayer:
+    path: pythonlayer/
+    name: es_python_layer
     compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
       - python3.7
       - python3.6
