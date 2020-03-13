@@ -10,7 +10,11 @@ python3 -m site
 ls
 apt-get install python3 -y
 
-/usr/lib/python3/dist-packages/pip install -r dev-requirements.txt
+ls /usr/lib/python3/dist-packages/
+ls /usr/lib/python3.7
+ls /usr/local/lib/python3.7/dist-packages
+
+
 ls /usr/local/lib/python3.7
 ls /usr/local/lib/python3.7/site-packages
 cp -r /usr/local/lib/python3.7/site-packages pythonlayer
