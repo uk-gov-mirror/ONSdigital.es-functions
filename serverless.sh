@@ -11,8 +11,8 @@ ls
 apt-get install python3 -y
 
 ls /usr/lib/python3/dist-packages/
-ls /usr/lib/python3.7
-ls /usr/local/lib/python3.7/dist-packages
+ls /usr/lib/python3.7/dist-packages/
+ls /usr/local/lib/python3.7/
 
 
 ls /usr/local/lib/python3.7
