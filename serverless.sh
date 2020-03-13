@@ -6,9 +6,10 @@ mkdir layer
 mkdir layer/python
 cp -R es_aws_functions layer/python/es_aws_functions
 
-ls -Ral /usr/local/bin/
-ls -Ral /usr/local/bin/python3.7
-ls -Ral /usr/bin
+
+ls -Ral /usr/bin/python3
+ls -Ral /usr/bin/python3.7
+ls -Ral /usr/bin/python3
 cp -r /usr/local/lib/python3.7/site-packages pythonlayer
 cd pythonlayer
 mv site-packages/ python/
