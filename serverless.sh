@@ -6,7 +6,7 @@ mkdir layer
 mkdir layer/python
 cp -R es_aws_functions layer/python/es_aws_functions
 
-python -m site
+python3 -m site
 ls
 apt-get install python3 -y
 pip3 install -r dev-requirements.txt
