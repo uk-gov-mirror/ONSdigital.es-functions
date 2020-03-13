@@ -13,6 +13,7 @@ ls
 cd pythonlayer
 ls
 mv site-packages/ python/
+zip python.zip python/
 cd ..
 
 echo Deploying to AWS...
