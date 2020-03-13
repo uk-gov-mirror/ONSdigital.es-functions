@@ -6,14 +6,7 @@ mkdir layer
 mkdir layer/python
 cp -R es_aws_functions layer/python/es_aws_functions
 
-
-whereis python3.7/pandas
-whereis python3.7
-
-
-
-python3 -m pandas
-ls -R /usr/local/bin/python
+ls -R /usr/local/bin/python3
 
 cp -r /usr/local/lib/python3.7/site-packages pythonlayer
 cd pythonlayer
