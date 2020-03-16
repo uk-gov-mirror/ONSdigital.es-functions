@@ -13,9 +13,11 @@ ls /site-packages
 cp -r /site-packages pythonlayer/site-packages
 
 cd pythonlayer
-
+ls
+du site-packages
 mv site-packages/ python/
-du python
+du -c -h python
+ls
 zip python.zip python/
 cd ..
 
