@@ -15,7 +15,7 @@ cp -r /site-packages pythonlayer/site-packages
 cd pythonlayer
 
 mv site-packages/ python/
-du python/
+du python
 zip python.zip python/
 cd ..
 
