@@ -15,10 +15,10 @@ layers:
       - python3.7
       - python3.6
     retain: true
-#  pythonlayer:
-#    path: pythonlayer/
-#    name: es_python_layer
-#    compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
-#      - python3.7
-#      - python3.6
-#    retain: true
+  pythonlayer:
+    path: pythonlayer/
+    name: es_python_layer
+    compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
+      - python3.7
+      - python3.6
+    retain: true
