@@ -5,9 +5,10 @@ cd functions-deploy-repository
 mkdir layer
 mkdir layer/python
 cp -R es_aws_functions layer/python/es_aws_functions
-#mkdir pythonlayer
+mkdir pythonlayer
 
-
+ls /
+ls /site-packages
 #cp -r /usr/local/lib/python3.7/site-packages/ pythonlayer/site-packages
 
 #cd pythonlayer
