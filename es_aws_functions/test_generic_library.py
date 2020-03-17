@@ -151,7 +151,7 @@ def incomplete_read_error(lambda_function, runtime_variables,
     :param file_list: List of input files for the function - Type: List
     :param wrangler_name: Wrangler that is being tested,
             used in mocking boto3. - Type: String
-    :param expected_message: - Error message wwe are expecting. - Type: String
+    :param expected_message: - Error message we are expecting. - Type: String
             (default to match current exception handling)
     :return Test Pass/Fail
     """
