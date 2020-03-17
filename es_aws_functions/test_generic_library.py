@@ -136,7 +136,8 @@ def general_error(lambda_function, runtime_variables,
 
 
 def incomplete_read_error(lambda_function, runtime_variables,
-                          environment_variables, file_list, wrangler_name):
+                          environment_variables, file_list, wrangler_name,
+                          expected_message="Incomplete Lambda response"):
     """
     Function to trigger an incomplete read error in a given wrangler.
 
@@ -150,6 +151,8 @@ def incomplete_read_error(lambda_function, runtime_variables,
     :param file_list: List of input files for the function - Type: List
     :param wrangler_name: Wrangler that is being tested,
             used in mocking boto3. - Type: String
+    :param expected_message: - Error message wwe are expecting. - Type: String
+            (default to match current exception handling)
     :return Test Pass/Fail
     """
 
@@ -168,7 +171,7 @@ def incomplete_read_error(lambda_function, runtime_variables,
                 "Payload": StreamingBody(test_data_bad, 1)}
             with pytest.raises(exception_classes.LambdaFailure) as exc_info:
                 lambda_function.lambda_handler(runtime_variables, context_object)
-            assert "Incomplete Lambda response" in exc_info.value.error_message
+            assert expected_message in exc_info.value.error_message
 
 
 def key_error(lambda_function,
