@@ -74,12 +74,16 @@ def client_error(lambda_function, runtime_variables,
     :param assertion: Type of assertion to use - Type: Function
     :return Test Pass/Fail
     """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
-        if "data" in runtime_variables["RuntimeVariables"].keys():
-            with open(file_name, "r") as file:
-                test_data = file.read()
-            runtime_variables["RuntimeVariables"]["data"] = test_data
+    if "data" in runtime_variables["RuntimeVariables"].keys():
+        with open(file_name, "r") as file:
+            test_data = file.read()
+        runtime_variables["RuntimeVariables"]["data"] = test_data
+
+    if not environment_variables:
         assertion(lambda_function, runtime_variables, expected_message)
+    else:
+        with mock.patch.dict(lambda_function.os.environ, environment_variables):
+            assertion(lambda_function, runtime_variables, expected_message)
 
 
 def create_bucket(bucket_name):
@@ -131,8 +135,11 @@ def general_error(lambda_function, runtime_variables,
     with mock.patch(mockable_function) as mock_schema:
         mock_schema.side_effect = Exception("Failed To Log")
 
-        with mock.patch.dict(lambda_function.os.environ, environment_variables):
+        if not environment_variables:
             assertion(lambda_function, runtime_variables, expected_message)
+        else:
+            with mock.patch.dict(lambda_function.os.environ, environment_variables):
+                assertion(lambda_function, runtime_variables, expected_message)
 
 
 def incomplete_read_error(lambda_function, runtime_variables,
@@ -157,18 +164,21 @@ def incomplete_read_error(lambda_function, runtime_variables,
     client = create_bucket(bucket_name)
     upload_files(client, bucket_name, file_list)
 
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
+    with mock.patch(wrangler_name + ".boto3.client") as mock_client:
+        mock_client_object = mock.Mock()
+        mock_client.return_value = mock_client_object
 
-        with mock.patch(wrangler_name + ".boto3.client") as mock_client:
-            mock_client_object = mock.Mock()
-            mock_client.return_value = mock_client_object
-
-            test_data_bad = io.BytesIO(b'{"Bad Bytes": 999}')
-            mock_client_object.invoke.return_value = {
-                "Payload": StreamingBody(test_data_bad, 1)}
-            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+        test_data_bad = io.BytesIO(b'{"Bad Bytes": 999}')
+        mock_client_object.invoke.return_value = {
+            "Payload": StreamingBody(test_data_bad, 1)}
+        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+            if not environment_variables:
                 lambda_function.lambda_handler(runtime_variables, context_object)
-            assert "Incomplete Lambda response" in exc_info.value.error_message
+            else:
+                with mock.patch.dict(lambda_function.os.environ, environment_variables):
+                    lambda_function.lambda_handler(runtime_variables, context_object)
+
+        assert "Incomplete Lambda response" in exc_info.value.error_message
 
 
 def key_error(lambda_function,
@@ -189,8 +199,11 @@ def key_error(lambda_function,
                             (default is empty dict) - Type: Dict
     :return Test Pass/Fail
     """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
+    if not environment_variables:
         assertion(lambda_function, runtime_variables, expected_message)
+    else:
+        with mock.patch.dict(lambda_function.os.environ, environment_variables):
+            assertion(lambda_function, runtime_variables, expected_message)
 
 
 def wrangler_method_error(lambda_function, runtime_variables,
@@ -213,19 +226,21 @@ def wrangler_method_error(lambda_function, runtime_variables,
     client = create_bucket(bucket_name)
     upload_files(client, bucket_name, file_list)
 
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
+    with mock.patch(wrangler_name + ".boto3.client") as mock_client:
+        mock_client_object = mock.Mock()
+        mock_client.return_value = mock_client_object
 
-        with mock.patch(wrangler_name + ".boto3.client") as mock_client:
-            mock_client_object = mock.Mock()
-            mock_client.return_value = mock_client_object
-
-            mock_client_object.invoke.return_value.get.return_value \
-                .read.return_value.decode.return_value = \
-                json.dumps({"error": "Test Message",
-                            "success": False})
-            with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+        mock_client_object.invoke.return_value.get.return_value \
+            .read.return_value.decode.return_value = \
+            json.dumps({"error": "Test Message",
+                        "success": False})
+        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+            if not environment_variables:
                 lambda_function.lambda_handler(runtime_variables, context_object)
-            assert "Test Message" in exc_info.value.error_message
+            else:
+                with mock.patch.dict(lambda_function.os.environ, environment_variables):
+                    lambda_function.lambda_handler(runtime_variables, context_object)
+        assert "Test Message" in exc_info.value.error_message
 
 
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
@@ -322,5 +337,8 @@ def value_error(lambda_function, expected_message, assertion,
     :param environment_variables: Environment Vars to send to function - Type: Dict
     :return Test Pass/Fail
     """
-    with mock.patch.dict(lambda_function.os.environ, environment_variables):
+    if not environment_variables:
         assertion(lambda_function, runtime_variables, expected_message)
+    else:
+        with mock.patch.dict(lambda_function.os.environ, environment_variables):
+            assertion(lambda_function, runtime_variables, expected_message)
