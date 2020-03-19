@@ -25,5 +25,13 @@ aws-vault exec serverless -- ./do.sh deploy
 ```
 You will need the correct credentials stored in aws vault so that this works.
 
+## Python Layer
+
+In addition to the aws-functions layer that contains our own library. We make use of a python layer to hold various dependencies in our lambdas.
+<br>
+This is up to automatically download and package the dependencies and versions held in the layer-requirements.txt file.
+<br>
+Deployment is handled in the same way. Any changes to dependencies should go into layer-requirements file to be picked up the the next deployment.
+
 [Back to top](#top)
 <hr>

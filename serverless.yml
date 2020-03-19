@@ -1,16 +1,23 @@
 ---
-service: results
+service: results-functions
 provider:
   name: aws
   runtime: python3.7
   region: eu-west-2
   deploymentBucket:
-    name: com.serverless.eu-west-2.results.ons.deploys
+    name: spp-results-sandbox-serverless
 
 layers:
-  pythonlayer:
+  funklayer:
     path: layer/
     name: ${self:provider.stage}-es-common-functions
+    compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
+      - python3.7
+      - python3.6
+    retain: true
+  pythonlayer:
+    path: pythonlayer/
+    name: es_python_layer
     compatibleRuntimes:  # A list of runtime environments this layer is compatible with.
       - python3.7
       - python3.6
