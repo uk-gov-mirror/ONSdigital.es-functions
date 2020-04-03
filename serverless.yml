@@ -5,7 +5,10 @@ provider:
   runtime: python3.7
   region: eu-west-2
   deploymentBucket:
-    name: spp-results-sandbox-serverless
+    name: spp-results-${self:custom.environment}-serverless
+
+custom:
+  environment: ${env:ENVIRONMENT}
 
 layers:
   funklayer:
