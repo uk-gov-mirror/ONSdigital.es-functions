@@ -268,6 +268,31 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
     return data, 999
 
 
+def replacement_invoke(FunctionName, Payload):  # noqa N803
+    """
+    Function to replace the lambda invoke, it instead saves data to be compared.
+
+    Takes the same parameters as get_dataframe, but only uses file_name and data.
+    :param FunctionName: Name of the lambda to be invoked. Unused
+    :param Payload: The passed in parameters and data for the original invoke.
+    :return None
+    """
+    runtime = json.loads(Payload)["RuntimeVariables"]
+    data = runtime["data"]
+
+    with open('tests/fixtures/test_wrangler_to_method_input.json', 'w',
+              encoding='utf-8') as f:
+        f.write(data)
+        f.close()
+
+    runtime["data"] = None
+
+    with open('tests/fixtures/test_wrangler_to_method_runtime.json', 'w',
+              encoding='utf-8') as f:
+        f.write(json.dumps(runtime))
+        f.close()
+
+
 def replacement_save_data(bucket_name, file_name, data,
                           sqs_queue_url, sqs_message_id, run_id=""):
     """

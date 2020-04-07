@@ -53,6 +53,7 @@ def handle_exception(exception, module, run_id, context=None):
     Returns an error message detailing exception type, arguments, and line number.
     :param exception: Exception that has occurred - Type: Exception
     :param module: Name of current module - Type: String
+    :param run_id: The current run's ID - Type: String
     :param context: AWS Context object
     (has default so that moving to glue will not require lots of changes)
     :return error_message: Error message generated for exception - Type: String

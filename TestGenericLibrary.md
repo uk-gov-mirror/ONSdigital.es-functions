@@ -13,6 +13,7 @@
 [Incomplete Read Error](#incompletereaderror)<br>
 [Key Error](#keyerror)<br>
 [Replacement Get Dataframe](#replacementgetdataframe)<br>
+[Replacement Invoke](#replacementinvoke)<br>
 [Replacement Save Data](#replacementsavedata)<br>
 [Replacement Save To S3](#replacementsavetos3)<br>
 [Upload Files](#uploadfiles)<br>
@@ -241,6 +242,26 @@ receipt: Int to simulate message receipt (999)- Type: Int
 #### Usage:
 ```
 test_generic_library.replacement_get_dataframe("", "test_bucket", "file_1.json", "")
+```
+
+[Back to top](#top)
+<hr>
+
+### Replacement Invoke <a name='replacementinvoke'>
+Function to replace the lambda invoke, it instead saves data to be compared.<br><br>
+
+Takes the same parameters as get_dataframe, but only uses file_name and data.<br><br>
+
+#### Parameters
+FunctionName: Name of the lambda to be invoked. Unused<br>
+Payload: The passed in parameters and data for the original invoke.
+
+#### Return
+-
+
+#### Usage:
+```
+test_generic_library.replacement_invoke("", json_dumps({"data": "", "column_name": "", ...}))
 ```
 
 [Back to top](#top)
