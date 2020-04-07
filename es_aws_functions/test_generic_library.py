@@ -268,7 +268,7 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
     return data, 999
 
 
-def replacement_invoke(FunctionName, Payload):
+def replacement_invoke(FunctionName, Payload):  # noqa N803
     """
     Function to replace the lambda invoke, it instead saves data to be compared.
 
