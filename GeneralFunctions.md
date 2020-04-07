@@ -3,7 +3,7 @@
 ## Contents
 [Calculate Adjacent Periods](#calculateadjacentperiods)<br>
 [Handle Exception](#handleexception)<br>
-[Sas Round](#sasround)<br>
+[SAS Round](#sasround)<br>
 ## Functions
 ### Calculate Adjacent Periods <a name='calculateadjacentperiods'>
 This function takes a period (Format: YYYYMM) and a periodicity. <br>
@@ -48,7 +48,7 @@ except Exception as e:
 [Back to top](#top)
 <hr>
 
-### Sas Round <a name='sasround'>
+### SAS Round <a name='sasround'>
 Replicates the sas rounding method by not rounding to nearest even.
 
 #### Parameters:
