@@ -271,7 +271,6 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
 def replacement_invoke(FunctionName, Payload):  # noqa N803
     """
     Function to replace the lambda invoke, it instead saves data to be compared.
-
     Takes the same parameters as get_dataframe, but only uses file_name and data.
     :param FunctionName: Name of the lambda to be invoked. Unused
     :param Payload: The passed in parameters and data for the original invoke.
@@ -279,6 +278,8 @@ def replacement_invoke(FunctionName, Payload):  # noqa N803
     """
     runtime = json.loads(Payload)["RuntimeVariables"]
     data = runtime["data"]
+    if type(data) == list:
+        data = json.dumps(data)
 
     with open('tests/fixtures/test_wrangler_to_method_input.json', 'w',
               encoding='utf-8') as f:
