@@ -14,7 +14,9 @@ class MockContext:
 
 bad_environment_variables = {}
 
-bad_runtime_variables = {
+bad_runtime_variables = {}
+
+incomplete_runtime_variables = {
     "RuntimeVariables": {"run_id": "run_id"}
 }
 
@@ -352,7 +354,7 @@ def upload_files(client, bucket_name, file_list):
 
 
 def value_error(lambda_function, expected_message, assertion,
-                runtime_variables=bad_runtime_variables,
+                runtime_variables=incomplete_runtime_variables,
                 environment_variables=bad_environment_variables):
     """
     Function to trigger a value error in a given method.
