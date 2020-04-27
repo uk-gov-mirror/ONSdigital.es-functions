@@ -14,7 +14,9 @@ class MockContext:
 
 bad_environment_variables = {}
 
-bad_runtime_variables = {
+bad_runtime_variables = {}
+
+incomplete_runtime_variables = {
     "RuntimeVariables": {"run_id": "run_id"}
 }
 
@@ -209,43 +211,6 @@ def key_error(lambda_function,
             assertion(lambda_function, runtime_variables, expected_message)
 
 
-def wrangler_method_error(lambda_function, runtime_variables,
-                          environment_variables, file_list, wrangler_name):
-    """
-    Function to trigger a method error in a given function.
-
-    Takes in a valid file(s) so that the function performs until after the lambda invoke.
-
-    :param lambda_function: Lambda function to test - Type: Function
-    :param runtime_variables: Runtime variables to send to function - Type: Dict
-    :param environment_variables: Environment Vars to send to function - Type: Dict
-    :param file_list: List of input files for the function - Type: List
-    :param wrangler_name: Wrangler that is being tested,
-            used in mocking boto3. - Type: String
-    :return Test Pass/Fail
-    """
-
-    bucket_name = environment_variables["bucket_name"]
-    client = create_bucket(bucket_name)
-    upload_files(client, bucket_name, file_list)
-
-    with mock.patch(wrangler_name + ".boto3.client") as mock_client:
-        mock_client_object = mock.Mock()
-        mock_client.return_value = mock_client_object
-
-        mock_client_object.invoke.return_value.get.return_value \
-            .read.return_value.decode.return_value = \
-            json.dumps({"error": "Test Message",
-                        "success": False})
-        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
-            if not environment_variables:
-                lambda_function.lambda_handler(runtime_variables, context_object)
-            else:
-                with mock.patch.dict(lambda_function.os.environ, environment_variables):
-                    lambda_function.lambda_handler(runtime_variables, context_object)
-        assert "Test Message" in exc_info.value.error_message
-
-
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
                               in_file_name, incoming_message_group, run_id=""):
     """
@@ -352,7 +317,7 @@ def upload_files(client, bucket_name, file_list):
 
 
 def value_error(lambda_function, expected_message, assertion,
-                runtime_variables=bad_runtime_variables,
+                runtime_variables=incomplete_runtime_variables,
                 environment_variables=bad_environment_variables):
     """
     Function to trigger a value error in a given method.
@@ -371,3 +336,40 @@ def value_error(lambda_function, expected_message, assertion,
     else:
         with mock.patch.dict(lambda_function.os.environ, environment_variables):
             assertion(lambda_function, runtime_variables, expected_message)
+
+
+def wrangler_method_error(lambda_function, runtime_variables,
+                          environment_variables, file_list, wrangler_name):
+    """
+    Function to trigger a method error in a given function.
+
+    Takes in a valid file(s) so that the function performs until after the lambda invoke.
+
+    :param lambda_function: Lambda function to test - Type: Function
+    :param runtime_variables: Runtime variables to send to function - Type: Dict
+    :param environment_variables: Environment Vars to send to function - Type: Dict
+    :param file_list: List of input files for the function - Type: List
+    :param wrangler_name: Wrangler that is being tested,
+            used in mocking boto3. - Type: String
+    :return Test Pass/Fail
+    """
+
+    bucket_name = environment_variables["bucket_name"]
+    client = create_bucket(bucket_name)
+    upload_files(client, bucket_name, file_list)
+
+    with mock.patch(wrangler_name + ".boto3.client") as mock_client:
+        mock_client_object = mock.Mock()
+        mock_client.return_value = mock_client_object
+
+        mock_client_object.invoke.return_value.get.return_value \
+            .read.return_value.decode.return_value = \
+            json.dumps({"error": "Test Message",
+                        "success": False})
+        with pytest.raises(exception_classes.LambdaFailure) as exc_info:
+            if not environment_variables:
+                lambda_function.lambda_handler(runtime_variables, context_object)
+            else:
+                with mock.patch.dict(lambda_function.os.environ, environment_variables):
+                    lambda_function.lambda_handler(runtime_variables, context_object)
+        assert "Test Message" in exc_info.value.error_message
