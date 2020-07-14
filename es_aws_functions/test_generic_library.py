@@ -248,14 +248,14 @@ def replacement_invoke(FunctionName, Payload):  # noqa N803
 
     with open('tests/fixtures/test_wrangler_to_method_input.json', 'w',
               encoding='utf-8') as f:
-        f.write(data)
+        f.write(json.dumps(json.loads(data), indent=4, sort_keys=True))
         f.close()
 
     runtime["data"] = None
 
     with open('tests/fixtures/test_wrangler_to_method_runtime.json', 'w',
               encoding='utf-8') as f:
-        f.write(json.dumps(runtime))
+        f.write(json.dumps(runtime, indent=4, sort_keys=True))
         f.close()
 
 
@@ -276,7 +276,7 @@ def replacement_save_data(bucket_name, file_name, data,
     :return None
     """
     with open("tests/fixtures/" + file_name, 'w', encoding='utf-8') as f:
-        f.write(data)
+        f.write(json.dumps(json.loads(data), indent=4, sort_keys=True))
         f.close()
 
 
@@ -294,7 +294,7 @@ def replacement_save_to_s3(bucket_name, file_name, data, run_id=""):
     :return None
     """
     with open("tests/fixtures/" + file_name, 'w', encoding='utf-8') as f:
-        f.write(data)
+        f.write(json.dumps(json.loads(data), indent=4, sort_keys=True))
         f.close()
 
 
