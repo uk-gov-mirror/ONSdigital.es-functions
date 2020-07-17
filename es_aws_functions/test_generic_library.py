@@ -212,7 +212,8 @@ def key_error(lambda_function,
 
 
 def replacement_get_dataframe(sqs_queue_url, bucket_name,
-                              in_file_name, incoming_message_group, run_id=""):
+                              in_file_name, incoming_message_group,
+                              file_prefix="", file_extension=""):
     """
     Function to replace the aws-functions.get_dataframe when performing tests.
 
@@ -225,6 +226,8 @@ def replacement_get_dataframe(sqs_queue_url, bucket_name,
     :param bucket_name: Name of bucket to retrieve data from - Type: String
     :param in_file_name: Name of file to read in - Type: String
     :param incoming_message_group: Name of message group. Unused
+    :param file_prefix: Optional, run id to be added as file name prefix. Unused
+    :param file_extension: The file extension that the submitted file should have. Unused
     :return data: Data from file - Type: Dataframe
     :return receipt: Int to simulate message receipt - Type: Int
     """
@@ -260,7 +263,8 @@ def replacement_invoke(FunctionName, Payload):  # noqa N803
 
 
 def replacement_save_data(bucket_name, file_name, data,
-                          sqs_queue_url, sqs_message_id, run_id=""):
+                          sqs_queue_url, sqs_message_id,
+                          file_prefix="", file_extension=""):
     """
     Function to replace the aws-functions.save_data when performing tests.
 
@@ -272,7 +276,8 @@ def replacement_save_data(bucket_name, file_name, data,
     :param data: Data to save - Type: Json String
     :param sqs_queue_url: Name of sqs queue. Unused
     :param sqs_message_id: Name of message group. Unused
-    :param run_id: ID to identify the run. Unused
+    :param file_prefix: Optional, run id to be added as file name prefix. Unused
+    :param file_extension: The file extension that the submitted file should have. Unused
     :return None
     """
     with open("tests/fixtures/" + file_name, 'w', encoding='utf-8') as f:
@@ -280,7 +285,8 @@ def replacement_save_data(bucket_name, file_name, data,
         f.close()
 
 
-def replacement_save_to_s3(bucket_name, file_name, data, run_id=""):
+def replacement_save_to_s3(bucket_name, file_name, data,
+                           file_prefix="", file_extension=""):
     """
     Function to replace the aws-functions.save_data when performing tests.
 
@@ -290,7 +296,8 @@ def replacement_save_to_s3(bucket_name, file_name, data, run_id=""):
     :param bucket_name: Name of bucket. Unused.
     :param file_name: Name of file to save in tests/fixtures - Type: String
     :param data: Data to save - Type: Json String
-    :param run_id: ID to identify the run. Unused
+    :param file_prefix: Optional, run id to be added as file name prefix. Unused
+    :param file_extension: The file extension that the submitted file should have. Unused
     :return None
     """
     with open("tests/fixtures/" + file_name, 'w', encoding='utf-8') as f:
