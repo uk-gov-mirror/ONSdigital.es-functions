@@ -265,11 +265,10 @@ def save_to_s3(bucket_name, output_file_name, output_data, file_prefix="",
         Body=output_data, ContentType=extension_types[file_extension])
 
 
-def send_sns_message(checkpoint, sns_topic_arn, module_name):
+def send_sns_message(sns_topic_arn, module_name):
     """
     This method is responsible for sending a notification to the specified arn,
     so that it can be used to relay information for the BPM to use and handle.
-    :param checkpoint: The current checkpoint location - Type: String.
     :param module_name: The name of the module currently being run - Type: String.
     :param sns_topic_arn: The arn of the sns topic you are directing the message at -
                           Type: String.
@@ -279,18 +278,16 @@ def send_sns_message(checkpoint, sns_topic_arn, module_name):
     sns_message = {
         "success": True,
         "module": module_name,
-        "checkpoint": checkpoint,
         "message": "Completed " + module_name,
     }
 
     return sns.publish(TargetArn=sns_topic_arn, Message=json.dumps(sns_message))
 
 
-def send_sns_message_with_anomalies(checkpoint, anomalies, sns_topic_arn, module_name):
+def send_sns_message_with_anomalies(anomalies, sns_topic_arn, module_name):
     """
     This method is responsible for sending a notification to the specified arn,
     so that it can be used to relay information for the BPM to use and handle.
-    :param checkpoint: The current checkpoint location - Type: String.
     :param anomalies: Json formatted summary of data anomalies - Type: String.
     :param module_name: The name of the module currently being run - Type: String.
     :param sns_topic_arn: The arn of the sns topic you are directing the message at -
@@ -301,7 +298,6 @@ def send_sns_message_with_anomalies(checkpoint, anomalies, sns_topic_arn, module
     sns_message = {
         "success": True,
         "module": module_name,
-        "checkpoint": checkpoint,
         "anomalies": anomalies,
         "message": "Completed " + module_name,
     }
