@@ -235,7 +235,6 @@ aws_functions.save_to_s3(bucket_name, file_name, data)
 This method is responsible for sending a notification to the specified arn, so that it can be used to relay information for the BPM to use and handle.
 
 #### Parameters:
-checkpoint: The current checkpoint location - Type: String.<br>
 sns_topic_arn: The arn of the sns topic you are directing the message at - Type: String.<br>
 module_name: The name of the module currently being run - Type: String.<br>
 
@@ -244,7 +243,7 @@ Json string containing metadata about the message.
 
 #### Usage:
 ```
-aws_functions.send_sns_message(checkpoint, arn, "Strata")
+aws_functions.send_sns_message(arn, "Strata")
 ```
 [Back to top](#top)
 <hr>
@@ -254,7 +253,6 @@ This method is responsible for sending a notification to the specified arn, so t
 This version of the send to sns is used by modules that also send a report of data anomalies
 
 #### Parameters:
-checkpoint: The current checkpoint location - Type: String.<br>
 anomalies: Json formatted summary of data anomalies - Type: String<br>
 module_name: The name of the module currently being run - Type: String.<br>
 sns_topic_arn: The arn of the sns topic you are directing the message at - Type: String.<br>
@@ -264,7 +262,7 @@ Nothing
 
 #### Usage:
 ```
-aws_functions.send_sns_message_with_anomalies(checkpoint, anomalies, arn, "Enrichment")
+aws_functions.send_sns_message_with_anomalies(anomalies, arn, "Enrichment")
 ```
 [Back to top](#top)
 <hr>
