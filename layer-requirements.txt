@@ -8,3 +8,4 @@ pefile==2018.8.8
 pyinstaller==3.4
 pytz==2019.3
 six==1.14.0
+requests
