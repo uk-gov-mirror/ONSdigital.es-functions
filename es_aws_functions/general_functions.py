@@ -1,4 +1,6 @@
+import logging
 import math
+import os
 import sys
 import traceback
 
@@ -80,3 +82,15 @@ def sas_round(num):
         return math.ceil(num)
     else:
         return math.floor(num)
+
+
+def get_logger():
+    """
+    Description: Returns a logger with loglevel set.
+                Will attempt to get log level from environment, defaults to info.
+
+    :return logger: The logger - Type: Logger
+    """
+    logger = logging.getLogger()
+    logger.setLevel(os.getenv('LOGGING_LEVEL', logging.INFO))
+    return logger
