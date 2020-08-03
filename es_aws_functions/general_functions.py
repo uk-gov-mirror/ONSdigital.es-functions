@@ -94,4 +94,3 @@ def get_logger():
     logger = logging.getLogger()
     logger.setLevel(logging.getLevelName(os.getenv('LOGGING_LEVEL', "INFO")))
     return logger
-
