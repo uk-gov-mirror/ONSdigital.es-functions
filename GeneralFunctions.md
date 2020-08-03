@@ -4,6 +4,7 @@
 [Calculate Adjacent Periods](#calculateadjacentperiods)<br>
 [Handle Exception](#handleexception)<br>
 [SAS Round](#sasround)<br>
+[Get logger](#getlogger)<br>
 ## Functions
 ### Calculate Adjacent Periods <a name='calculateadjacentperiods'>
 This function takes a period (Format: YYYYMM) and a periodicity. <br>
@@ -60,6 +61,24 @@ num: Rounded number - Type: Int
 #### Usage:
 ```
 general_functions.sas_round(x["prev_" + question] * x["imputation_factor_" + question]),
+```
+
+[Back to top](#top)
+<hr>
+
+### Get Logger <a name='getlogger'>
+Returns a logger with loglevel set. Will attempt to get log level from environment, defaults to info.
+
+#### Parameters:
+
+---
+
+#### Return:
+logger: The logger - Type: Logger
+
+#### Usage:
+```
+logger = general_functions.get_logger(),
 ```
 
 [Back to top](#top)
