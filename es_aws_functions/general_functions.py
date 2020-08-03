@@ -87,7 +87,7 @@ def sas_round(num):
 def get_logger():
     """
     Description: Returns a logger with loglevel set.
-                Will attempt to get log level from environment, defaults to info.
+                 Will attempt to get log level from environment, defaults to info.
 
     :return logger: The logger - Type: Logger
     """
