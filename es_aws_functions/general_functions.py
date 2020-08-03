@@ -92,5 +92,6 @@ def get_logger():
     :return logger: The logger - Type: Logger
     """
     logger = logging.getLogger()
-    logger.setLevel(os.getenv('LOGGING_LEVEL', logging.INFO))
+    logger.setLevel(logging.getLevelName(os.getenv('LOGGING_LEVEL', "INFO")))
     return logger
+
