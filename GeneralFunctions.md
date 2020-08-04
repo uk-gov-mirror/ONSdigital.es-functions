@@ -68,7 +68,8 @@ general_functions.sas_round(x["prev_" + question] * x["imputation_factor_" + que
 
 ### Get Logger <a name='getlogger'>
 Returns a logger with loglevel set. Will attempt to get log level from environment, defaults to info.
-
+<br>
+To change the logging level of any module, set a LOGGING_LEVEL parameter to one of [DEBUG, WARN, ERROR, etc]
 #### Parameters:
 
 ---
