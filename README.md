@@ -10,11 +10,11 @@ data = aws_functions.read_from_s3("MyBucketName", "MyFileName")
 <hr>
   
 ## Module Contents:
-[AWS Functions](AWSFunctions.md)<br>
-[Exception Classes](ExceptionClasses.md)<br>
-[General Functions](GeneralFunctions.md)<br>
-[Test Generic Library](TestGenericLibrary.md)<br>
-[Test Module Example](TestModuleExample.md)
+[AWS Functions](documentation/AWSFunctions.md)<br>
+[Exception Classes](documentation/ExceptionClasses.md)<br>
+[General Functions](documentation/GeneralFunctions.md)<br>
+[Test Generic Library](documentation/TestGenericLibrary.md)<br>
+[Test Module Example](documentation/TestModuleExample.md)
 
 ## Automated Deployment <a name='autodeploy'>
 
