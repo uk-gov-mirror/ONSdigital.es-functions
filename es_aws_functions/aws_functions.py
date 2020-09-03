@@ -265,6 +265,36 @@ def save_to_s3(bucket_name, output_file_name, output_data, file_prefix="",
         Body=output_data, ContentType=extension_types[file_extension])
 
 
+def send_bpm_status(queue_url, module, status, run_id):
+    """
+    This function is to provide status updates to the user via the BPM layer. Currently
+    it is set up to place the message on an SQS queue for BPM to pick up.
+    :param queue_url: Name of the queue for the BMP layer - Type: String.
+    :param module: Current module name - Type: String.
+    :param status: Current status of the module IN PROGRESS, FINISHED, FAILED -
+                    Type: String.
+    :param run_id: run id of current run passed from the module - Type: String
+    :return: None
+    """
+    output_message_id = "BMI_Status_Message"
+
+    bpm_message = {
+        "bpm_id": run_id,
+        "status": {
+            "current_step": "?",
+            "total_steps": "?",
+            "step_name": module,
+            "message": {
+                "text": module + " stage: " + status
+            },
+            "state": status}
+    }
+
+    bpm_message = json.dumps(bpm_message)
+
+    send_sqs_message(queue_url, bpm_message, output_message_id)
+
+
 def send_sns_message(sns_topic_arn, module_name):
     """
     This method is responsible for sending a notification to the specified arn,
