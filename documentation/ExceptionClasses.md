@@ -1,5 +1,5 @@
 # Exception Classes <a name='top'>
-[Back](README.md)
+[Back](../README.md)
   
 ## Contents
 [Do Not Have All Data Error](#donthavealldata)<br>

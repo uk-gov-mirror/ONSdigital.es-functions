@@ -1,5 +1,5 @@
 # Test Module Example <a name='top'>
-[Back](README.md)
+[Back](../README.md)
 
 ## Description
 Here is a copy of the generic tests being used in the Enrichment module.
