@@ -276,7 +276,8 @@ def send_bpm_status(queue_url, module, status, run_id):
     :param run_id: run id of current run passed from the module - Type: String
     :return: None
     """
-    output_message_id = "BMI_Status_Message"
+    output_message = "_BMI_Status_Message"
+    output_message_id = run_id + output_message
 
     bpm_message = {
         "bpm_id": run_id,
