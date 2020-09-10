@@ -265,15 +265,18 @@ def save_to_s3(bucket_name, output_file_name, output_data, file_prefix="",
         Body=output_data, ContentType=extension_types[file_extension])
 
 
-def send_bpm_status(queue_url, module, status, run_id):
+def send_bpm_status(queue_url, module_name, status, run_id, current_step_num,
+                    total_steps):
     """
     This function is to provide status updates to the user via the BPM layer. Currently
     it is set up to place the message on an SQS queue for BPM to pick up.
     :param queue_url: Name of the queue for the BMP layer - Type: String.
-    :param module: Current module name - Type: String.
-    :param status: Current status of the module IN PROGRESS, FINISHED, FAILED -
-                    Type: String.
+    :param module_name: Current module name - Type: String.
+    :param status: Current status of the module IN PROGRESS, FINISHED, FAILED
+    - Type: String.
     :param run_id: run id of current run passed from the module - Type: String
+    :param current_step_num: Number of the current module step in sequence - Type String.
+    :param total_steps: Total number of steps in the system
     :return: None
     """
     output_message = "_BMI_Status_Message"
@@ -282,11 +285,11 @@ def send_bpm_status(queue_url, module, status, run_id):
     bpm_message = {
         "bpm_id": run_id,
         "status": {
-            "current_step": "?",
-            "total_steps": "?",
-            "step_name": module,
+            "current_step": current_step_num,
+            "total_steps": total_steps,
+            "step_name": module_name,
             "message": {
-                "text": module + " stage: " + status
+                "text": module_name + " stage: " + status
             },
             "state": status}
     }
