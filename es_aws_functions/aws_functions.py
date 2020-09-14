@@ -5,6 +5,7 @@ from io import StringIO
 import boto3
 import pandas as pd
 from botocore.exceptions import ClientError
+
 from es_aws_functions import exception_classes
 
 extension_types = {
@@ -265,8 +266,8 @@ def save_to_s3(bucket_name, output_file_name, output_data, file_prefix="",
         Body=output_data, ContentType=extension_types[file_extension])
 
 
-def send_bpm_status(queue_url, module_name, status, run_id, current_step_num,
-                    total_steps):
+def send_bpm_status(queue_url, module_name, status, run_id, current_step_num="-",
+                    total_steps="6"):
     """
     This function is to provide status updates to the user via the BPM layer. Currently
     it is set up to place the message on an SQS queue for BPM to pick up.
