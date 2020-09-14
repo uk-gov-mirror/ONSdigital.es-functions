@@ -5,7 +5,6 @@ from io import StringIO
 import boto3
 import pandas as pd
 from botocore.exceptions import ClientError
-
 from es_aws_functions import exception_classes
 
 extension_types = {
