@@ -51,7 +51,7 @@ def calculate_adjacent_periods(current_period, periodicity):
     return last_period
 
 
-def handle_exception(exception, module, run_id, context=None, bpm_queue_url=None):
+def handle_exception(exception, module, run_id, bpm_queue_url, context=None):
     """
     Description: Generates an error message from an exception.
     Returns an error message detailing exception type, arguments, and line number.
@@ -67,7 +67,7 @@ def handle_exception(exception, module, run_id, context=None, bpm_queue_url=None
     tb = traceback.extract_tb(exc_tb)[-1]
     error_message = str(exc_type) + " in " + module + " | RunID: " + str(run_id) + \
         " |- " + str(exception.args)
-    if(context):
+    if context:
         error_message += " | Request ID: " + str(context.aws_request_id)
     error_message += " | Outer line number: " + str(exception.__traceback__.tb_lineno)
     error_message += " | Inner Line number: " + str(tb[1]) + " in: " + str(tb[0])
