@@ -1,7 +1,6 @@
 import io
 import json
 from unittest import mock
-
 import boto3
 import pytest
 from botocore.response import StreamingBody
