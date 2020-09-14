@@ -58,9 +58,10 @@ def handle_exception(exception, module, run_id, bpm_queue_url, context=None):
     :param exception: Exception that has occurred - Type: Exception
     :param module: Name of current module - Type: String
     :param run_id: The current run's ID - Type: String
+    :param bpm_queue_url: The url of the queue to send the BPM status message to.
+        if not sending BPM status, set in the call to None.
     :param context: AWS Context object
     (has default so that moving to glue will not require lots of changes)
-    :param bpm_queue_url: The url of the queue to send the BPM status message to.
     :return error_message: Error message generated for exception - Type: String
     """
     exc_type, exc_obj, exc_tb = sys.exc_info()
