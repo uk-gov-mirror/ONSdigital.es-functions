@@ -4,7 +4,7 @@ import os
 import sys
 import traceback
 
-import es_aws_functions.aws_functions as send_msg
+from es_aws_functions import aws_functions
 
 
 def calculate_adjacent_periods(current_period, periodicity):
@@ -51,17 +51,16 @@ def calculate_adjacent_periods(current_period, periodicity):
     return last_period
 
 
-def handle_exception(exception, module, run_id, bpm_queue_url, context=None):
+def handle_exception(exception, module, run_id, context=None, bpm_queue_url=None):
     """
     Description: Generates an error message from an exception.
     Returns an error message detailing exception type, arguments, and line number.
     :param exception: Exception that has occurred - Type: Exception
     :param module: Name of current module - Type: String
     :param run_id: The current run's ID - Type: String
-    :param bpm_queue_url: The url of the queue to send the BPM status message to.
-        if not sending BPM status, set in the call to None.
     :param context: AWS Context object
     (has default so that moving to glue will not require lots of changes)
+    :param bpm_queue_url: The url of the queue to send the BPM status message to.
     :return error_message: Error message generated for exception - Type: String
     """
     exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -74,7 +73,7 @@ def handle_exception(exception, module, run_id, bpm_queue_url, context=None):
     error_message += " | Inner Line number: " + str(tb[1]) + " in: " + str(tb[0])
 
     if bpm_queue_url:
-        send_msg.send_bpm_status(bpm_queue_url, module, error_message, run_id)
+        aws_functions.send_bpm_status(bpm_queue_url, module, error_message, run_id)
 
     return error_message
 
