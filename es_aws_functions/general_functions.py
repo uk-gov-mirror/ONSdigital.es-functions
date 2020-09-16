@@ -4,7 +4,7 @@ import os
 import sys
 import traceback
 
-import es_aws_functions.aws_functions as send_msg
+from es_aws_functions import aws_functions
 
 
 def calculate_adjacent_periods(current_period, periodicity):
@@ -67,13 +67,13 @@ def handle_exception(exception, module, run_id, context=None, bpm_queue_url=None
     tb = traceback.extract_tb(exc_tb)[-1]
     error_message = str(exc_type) + " in " + module + " | RunID: " + str(run_id) + \
         " |- " + str(exception.args)
-    if(context):
+    if context:
         error_message += " | Request ID: " + str(context.aws_request_id)
     error_message += " | Outer line number: " + str(exception.__traceback__.tb_lineno)
     error_message += " | Inner Line number: " + str(tb[1]) + " in: " + str(tb[0])
 
     if bpm_queue_url:
-        send_msg.send_bpm_status(bpm_queue_url, module, error_message, run_id)
+        aws_functions.send_bpm_status(bpm_queue_url, module, error_message, run_id)
 
     return error_message
 
