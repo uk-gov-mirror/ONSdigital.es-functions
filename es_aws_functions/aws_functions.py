@@ -266,7 +266,7 @@ def save_to_s3(bucket_name, output_file_name, output_data, file_prefix="",
 
 
 def send_bpm_status(queue_url, module_name, status, run_id, current_step_num="-",
-                    total_steps="-"):
+                    total_steps="-", survey="BMI"):
     """
     This function is to provide status updates to the user via the BPM layer. Currently
     it is set up to place the message on an SQS queue for BPM to pick up.
@@ -276,11 +276,13 @@ def send_bpm_status(queue_url, module_name, status, run_id, current_step_num="-"
     - Type: String.
     :param run_id: run id of current run passed from the module - Type: String
     :param current_step_num: Number of the current module step in sequence - Type String.
-    :param total_steps: Total number of steps in the system
+    :param total_steps: Total number of steps in the system.
+    :param survey: Survey name for grouping status messages by survey and run_id
+    - type string.
     :return: None
     """
-    output_message = "_BMI_Status_Message"
-    output_message_id = run_id + output_message
+    output_message = "_Status_Message"
+    output_message_id = run_id + "_" + survey + output_message
 
     bpm_message = {
         "bpm_id": run_id,
