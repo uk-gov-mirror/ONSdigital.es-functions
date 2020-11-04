@@ -11,6 +11,7 @@
 [Save Data](#savedata)<br>
 [Save Dataframe To CSV](#savetocsv)<br>
 [Save To S3](#savetos3)<br>
+[Send BPM Status](#sendbpmstatus)<br>
 [Send SNS Message](#sendsnsmessage)<br>
 [Send SNS Message With Anomalies](#sendsnsmessageanomalies)<br>
 [Send SQS Message](#sendsqsmessage)<br>
@@ -227,6 +228,30 @@ Nothing
 #### Usage:
 ```
 aws_functions.save_to_s3(bucket_name, file_name, data)
+```
+[Back to top](#top)
+<hr>
+
+### Send BPM Status <a name='sendbpmstatus'>
+This function is to provide status updates to the user via the BPM layer. Currently it is set up to place the message on an SQS queue for BPM to pick up.
+
+#### Parameters: 
+queue_url: Name of the queue for the BMP layer - Type: String.<br>
+module_name: Current module name - Type: String.<br>
+status: Current status of the module IN PROGRESS, FINISHED, FAILED - Type: String.<br>
+run_id: run id of current run passed from the module - Type: String.<br>
+current_step_num: Number of the current module step in sequence - Type: String.<br>
+total_steps: Total number of steps in the system - Type: String.<br>
+survey: Survey name for grouping status messages by survey and run_id - Type: String.<br>
+
+#### Return:
+Json string containing metadata about the message.
+
+#### Usage:
+```
+aws_functions.send_bpm_status(
+    bpm_queue_url, current_module, status, run_id, current_step_num, total_steps, survey)
+
 ```
 [Back to top](#top)
 <hr>

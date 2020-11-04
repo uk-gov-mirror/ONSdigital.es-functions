@@ -9,6 +9,7 @@
 [Client Error](#clienterror)<br>
 [Create Bucket](#createbucket)<br>
 [Create Client](#createclient)<br>
+[Create Queue](#createqueue)<br>
 [General Error](#generalerror)<br>
 [Incomplete Read Error](#incompletereaderror)<br>
 [Key Error](#keyerror)<br>
@@ -137,6 +138,23 @@ client = test_generic_library.create_client("s3")
 or
 ----
 client = test_generic_library.create_client("s3", "eu-west-1")
+```
+
+[Back to top](#top)
+<hr>
+
+### Create Queue <a name='createqueue'>
+Create an sqs queue.<br>
+  
+#### Parameters:
+queue_name: Name of queue to create - Type: String<br>
+
+#### Return:
+client: SQS client that created queue - Type: Boto3 Client<br>
+
+#### Usage:
+```
+client = test_generic_library.create_queue(queue_name)
 ```
 
 [Back to top](#top)
