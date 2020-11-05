@@ -115,6 +115,17 @@ def create_client(client_type, region="eu-west-2"):
     return client
 
 
+def create_queue(queue_name):
+    """
+    Create an sqs queue.
+    :param queue_name: Name of queue to create - Type: String
+    :return client: SQS client that created queue - Type: Boto3 Client
+    """
+    client = create_client("sqs")
+    client.create_queue(QueueName=queue_name)
+    return client
+
+
 def general_error(lambda_function, runtime_variables,
                   environment_variables, mockable_function,
                   expected_message, assertion):
