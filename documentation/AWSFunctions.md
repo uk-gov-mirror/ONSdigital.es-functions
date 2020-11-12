@@ -298,7 +298,8 @@ This method is responsible for sending data to an SQS queue.
 #### Parameters: 
 queue_url: The url of the SQS queue. - Type: String<br>
 message: The message/data you wish to send to the SQS queue - Type: String<br>
-output_message_id: The label of the record in the SQS queue - Type: String<br>
+message_id: The label of the record in the SQS queue - Type: String<br>
+fifo: Type of SQS queue - Type: Boolean<br>
 
 #### Return:
 Json string containing metadata about the message.
