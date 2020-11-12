@@ -12,6 +12,8 @@ extension_types = {
     ".csv": "text/plain"
 }
 
+region = "eu-west-2"
+
 
 def delete_data(bucket_name, file_name, file_prefix="", file_extension=".json"):
     """
@@ -25,7 +27,7 @@ def delete_data(bucket_name, file_name, file_prefix="", file_extension=".json"):
     :param file_extension: The file extension that the submitted file should have.
     :return: Success or error message - Type: String
     """
-    s3 = boto3.resource('s3', region_name='eu-west-2')
+    s3 = boto3.resource('s3', region_name=region)
     try:
         full_file_name = file_name + file_extension
         if len(file_prefix) > 0:
@@ -130,7 +132,7 @@ def get_sqs_message(queue_url, max_number_of_messages=1):
      - Type: Int
     :return: Messages from queue - Type: json string
     """
-    sqs = boto3.client("sqs", region_name="eu-west-2")
+    sqs = boto3.client("sqs", region_name=region)
     return sqs.receive_message(QueueUrl=queue_url, AttributeNames=["MessageGroupId"],
                                MaxNumberOfMessages=max_number_of_messages)
 
@@ -189,7 +191,7 @@ def read_from_s3(bucket_name, file_name, file_prefix="", file_extension=".json")
     :param file_extension: The file extension that the submitted file should have.
     :return: input_file: The JSON file in S3 - Type: String
     """
-    s3 = boto3.resource("s3", region_name="eu-west-2")
+    s3 = boto3.resource("s3", region_name=region)
     full_file_name = file_name + file_extension
     if len(file_prefix) > 0:
         full_file_name = file_prefix + full_file_name
@@ -223,7 +225,7 @@ def save_data(bucket_name, file_name, data, queue_url, message_id, file_prefix="
     """
     save_to_s3(bucket_name, file_name, data, file_prefix, file_extension)
     sqs_message = json.dumps({"bucket": bucket_name, "key": file_name})
-    send_sqs_message(queue_url, sqs_message, message_id)
+    send_sqs_message(queue_url, sqs_message, message_id, fifo=True)
 
 
 def save_dataframe_to_csv(dataframe, bucket_name, file_name, file_prefix="",
@@ -255,7 +257,7 @@ def save_to_s3(bucket_name, output_file_name, output_data, file_prefix="",
     :param file_extension: The file extension that the submitted file should have.
     :return: None
     """
-    s3 = boto3.resource("s3", region_name="eu-west-2")
+    s3 = boto3.resource("s3", region_name=region)
 
     full_file_name = output_file_name + file_extension
     if len(file_prefix) > 0:
@@ -298,7 +300,7 @@ def send_bpm_status(queue_url, module_name, status, run_id, current_step_num="-"
 
     bpm_message = json.dumps(bpm_message)
 
-    send_sqs_message(queue_url, bpm_message, output_message_id)
+    send_sqs_message(queue_url, bpm_message, output_message_id, fifo=True)
 
 
 def send_sns_message(sns_topic_arn, module_name):
@@ -310,7 +312,7 @@ def send_sns_message(sns_topic_arn, module_name):
                           Type: String.
     :return: Json string containing metadata about the message.
     """
-    sns = boto3.client("sns", region_name="eu-west-2")
+    sns = boto3.client("sns", region_name=region)
     sns_message = {
         "success": True,
         "module": module_name,
@@ -330,7 +332,7 @@ def send_sns_message_with_anomalies(anomalies, sns_topic_arn, module_name):
                           Type: String.
     :return: None
     """
-    sns = boto3.client("sns", region_name="eu-west-2")
+    sns = boto3.client("sns", region_name=region)
     sns_message = {
         "success": True,
         "module": module_name,
@@ -341,20 +343,28 @@ def send_sns_message_with_anomalies(anomalies, sns_topic_arn, module_name):
     sns.publish(TargetArn=sns_topic_arn, Message=json.dumps(sns_message))
 
 
-def send_sqs_message(queue_url, message, output_message_id):
+def send_sqs_message(queue_url, message, message_id="", fifo=True):
     """
     This method is responsible for sending data to the SQS queue.
     :param queue_url: The url of the SQS queue. - Type: String
     :param message: The message/data you wish to send to the SQS queue - Type: String
-    :param output_message_id: The label of the record in the SQS queue - Type: String
+    :param message_id: The label of the record in the SQS queue - Type: String
+    :param fifo: Type of SQS queue - Type: Boolean
     :return: Json string containing metadata about the message.
     """
     # MessageDeduplicationId is set to a random hash to overcome de-duplication,
     # otherwise modules could not be re-run in the space of 5 Minutes.
-    sqs = boto3.client("sqs", region_name="eu-west-2")
-    return sqs.send_message(
-        QueueUrl=queue_url,
-        MessageBody=message,
-        MessageGroupId=output_message_id,
-        MessageDeduplicationId=str(random.getrandbits(128)),
-    )
+    sqs = boto3.client("sqs", region_name=region)
+
+    if fifo:
+        return sqs.send_message(
+            QueueUrl=queue_url,
+            MessageBody=message,
+            MessageGroupId=message_id,
+            MessageDeduplicationId=str(random.getrandbits(128))
+        )
+    else:
+        return sqs.send_message(
+            QueueUrl=queue_url,
+            MessageBody=message
+        )
