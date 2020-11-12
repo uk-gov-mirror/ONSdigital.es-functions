@@ -225,7 +225,7 @@ def save_data(bucket_name, file_name, data, queue_url, message_id, file_prefix="
     """
     save_to_s3(bucket_name, file_name, data, file_prefix, file_extension)
     sqs_message = json.dumps({"bucket": bucket_name, "key": file_name})
-    send_sqs_message(queue_url, sqs_message, message_id, True)
+    send_sqs_message(queue_url, sqs_message, message_id, fifo=True)
 
 
 def save_dataframe_to_csv(dataframe, bucket_name, file_name, file_prefix="",
@@ -300,7 +300,7 @@ def send_bpm_status(queue_url, module_name, status, run_id, current_step_num="-"
 
     bpm_message = json.dumps(bpm_message)
 
-    send_sqs_message(queue_url, bpm_message, output_message_id, True)
+    send_sqs_message(queue_url, bpm_message, output_message_id, fifo=True)
 
 
 def send_sns_message(sns_topic_arn, module_name):
