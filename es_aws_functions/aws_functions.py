@@ -5,6 +5,7 @@ from io import StringIO
 import boto3
 import pandas as pd
 from botocore.exceptions import ClientError
+
 from es_aws_functions import exception_classes
 
 extension_types = {
@@ -297,8 +298,6 @@ def send_bpm_status(queue_url, module_name, status, run_id, current_step_num="-"
             },
             "state": status}
     }
-
-    bpm_message = json.dumps(bpm_message)
 
     send_sqs_message(queue_url, bpm_message, output_message_id, fifo=True)
 
