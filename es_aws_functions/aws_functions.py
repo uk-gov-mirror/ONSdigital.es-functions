@@ -9,7 +9,7 @@ from es_aws_functions import exception_classes
 
 extension_types = {
     ".json": "application/json",
-    ".csv": "text/plain"
+    ".csv": "text/csv"
 }
 
 region = "eu-west-2"
