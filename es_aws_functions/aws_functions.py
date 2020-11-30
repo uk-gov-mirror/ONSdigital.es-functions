@@ -277,8 +277,8 @@ def send_bpm_status(queue_url, module_name, status, run_id, current_step_num=Non
     :param status: Current status of the module IN PROGRESS, FINISHED, FAILED
     - Type: String.
     :param run_id: run id of current run passed from the module - Type: String.
-    :param current_step_num: Number of the current module step in sequence - Type: int or None.
-    :param total_steps: Total number of steps in the system. - Type: int or None.
+    :param current_step_num: Number of the current module step in sequence - Type: Int or None.
+    :param total_steps: Total number of steps in the system. - Type: Int or None.
     :param survey: Survey name for grouping status messages by survey and run_id
     - Type: String.
     :return: None
