@@ -9,4 +9,5 @@ pyinstaller==3.4
 pytz==2019.3
 six==1.14.0
 requests
+immutables
 git+https://github.com/ONSdigital/spp-logger.git
