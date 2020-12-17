@@ -2,10 +2,10 @@ import math
 import sys
 import traceback
 
-import immutables
-
 from spp_logger import SPPLogger, SPPLoggerConfig
 from es_aws_functions import aws_functions
+
+import immutables
 
 
 def calculate_adjacent_periods(current_period, periodicity):
