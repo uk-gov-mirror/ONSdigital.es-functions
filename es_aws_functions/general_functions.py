@@ -1,10 +1,11 @@
-import logging
 import math
-import os
 import sys
 import traceback
 
 from es_aws_functions import aws_functions
+
+import immutables
+from spp_logger import SPPLogger, SPPLoggerConfig
 
 
 def calculate_adjacent_periods(current_period, periodicity):
@@ -90,13 +91,37 @@ def sas_round(num):
         return math.floor(num)
 
 
-def get_logger():
+def get_logger(survey, module_name, environment, run_id, log_level="INFO"):
     """
-    Description: Returns a logger with loglevel set.
-                 Will attempt to get log level from environment, defaults to info.
-
+    Description: Returns the spp-logger with loglevel set.
+                 defaults to info.
+    :param survey: Name of the current survey - Type: String
+    :param module_name: Name of current module - Type: String
+    :param environment: Name of the current environment - Type: String
+    :param run_id: ID passed from BPM
+    :param log_level: the log_level for the logger - Type: String (default=INFO)
     :return logger: The logger - Type: Logger
     """
-    logger = logging.getLogger()
-    logger.setLevel(logging.getLevelName(os.getenv('LOGGING_LEVEL', "INFO")))
+
+    # set the logger context attributes
+    main_context = immutables.Map(log_correlation_id=str(run_id),
+                                  log_correlation_type=survey,
+                                  log_level=log_level
+                                  )
+    # set logger configs
+    config = SPPLoggerConfig(
+        service="Results",
+        component=module_name,
+        environment=environment,
+        deployment=environment,
+        user="system",
+    )
+    # set the logger with context and configs
+    # Stream is configurable as any IO, it defaults to stdout
+    logger = SPPLogger(
+        name="my_logger",
+        config=config,
+        context=main_context,
+        stream=sys.stdout,
+    )
     return logger
