@@ -1,11 +1,8 @@
-import logging
 import math
-import os
-from pathlib import Path
 import sys
 import traceback
-from uuid import uuid4
 
+from spp_logger import SPPLogger, SPPLoggerConfig
 import immutables
 
 from es_aws_functions import aws_functions
@@ -119,7 +116,7 @@ def get_logger(survey, module_name, environment, run_id, log_level="INFO"):
         deployment=environment,
         user="system",
     )
-    #set the logger with context and configs
+    # set the logger with context and configs
     # Stream is configurable as any IO, it defaults to stdout
     logger = SPPLogger(
         name="my_logger",
