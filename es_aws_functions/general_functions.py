@@ -1,7 +1,6 @@
 import math
 import sys
 import traceback
-
 import immutables
 
 from spp_logger import SPPLogger, SPPLoggerConfig
