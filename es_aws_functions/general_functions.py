@@ -4,7 +4,9 @@ import traceback
 
 import immutables
 from spp_logger import SPPLogger, SPPLoggerConfig
+
 from es_aws_functions import aws_functions
+
 
 def calculate_adjacent_periods(current_period, periodicity):
     """
