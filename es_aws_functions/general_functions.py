@@ -3,8 +3,8 @@ import sys
 import traceback
 
 from es_aws_functions import aws_functions
-
 import immutables
+
 from spp_logger import SPPLogger, SPPLoggerConfig
 
 
