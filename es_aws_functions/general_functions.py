@@ -1,8 +1,8 @@
 import math
 import sys
 import traceback
-import immutables
 
+import immutables
 from es_aws_functions import aws_functions
 
 from spp_logger import SPPLogger, SPPLoggerConfig
