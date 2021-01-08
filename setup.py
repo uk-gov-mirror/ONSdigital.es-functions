@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-with open("./requirements.txt") as f:
+with open("./dev-requirements.txt") as f:
     dev_reqs = f.read()
 
 setup(name='es_aws_functions',
