@@ -27,6 +27,7 @@ GitPython==2.1.11
 identify==1.4.5
 idna==2.8
 imagesize==1.1.0
+immutables == 0.14
 importlib-metadata==0.18
 isort==4.3.21
 ipdb==0.12
@@ -61,7 +62,7 @@ pyparsing==2.4.0
 pytest==4.5.0
 pytest-cov==2.7.1
 python-dateutil==2.8.0
-pytz==2019.1
+pytz==2020.4
 PyYAML==5.1
 requests==2.22.0
 rsa==3.4.2

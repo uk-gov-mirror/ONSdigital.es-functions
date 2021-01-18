@@ -2,9 +2,9 @@ import math
 import sys
 import traceback
 
+import immutables
 from es_aws_functions import aws_functions
 
-import immutables
 from spp_logger import SPPLogger, SPPLoggerConfig
 
 
@@ -117,7 +117,6 @@ def get_logger(survey, module_name, environment, run_id, log_level="INFO"):
         component=module_name,
         environment=environment,
         deployment=environment,
-        user="system",
     )
     # set the logger with context and configs
     # Stream is configurable as any IO, it defaults to stdout
