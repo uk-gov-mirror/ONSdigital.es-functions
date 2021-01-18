@@ -10,4 +10,5 @@ pytz==2019.3
 six==1.14.0
 requests
 immutables
-git+https://github.com/ONSdigital/spp-logger/commit/334a394580aaeef001a89bc9a48a748b0859cfe6
+git+https://github.com/ONSdigital/spp-logger.git@334a394580aaeef001a89bc9a48a748b0859cfe6
+with
