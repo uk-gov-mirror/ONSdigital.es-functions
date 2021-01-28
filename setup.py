@@ -1,9 +1,15 @@
 from setuptools import find_packages, setup
 
-with open("./dev-requirements.txt") as f:
-    dev_reqs = f.read()
+requirements = [
+    "boto3",
+    "immutables",
+    "pandas",
+    "spp-logger @ git+https://github.com/ONSdigital/spp-logger"
+]
 
-setup(name='es_aws_functions',
-      version='1.0',
-      packages=find_packages(), install_requires=dev_reqs
-      )
+setup(
+    name='es_aws_functions',
+    version='1.0',
+    packages=find_packages(),
+    install_requires=requirements
+ )
