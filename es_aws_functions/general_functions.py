@@ -74,7 +74,7 @@ def handle_exception(exception, module, run_id, context=None, bpm_queue_url=None
     error_message += " | Inner Line number: " + str(tb[1]) + " in: " + str(tb[0])
 
     if bpm_queue_url:
-        status_msg = "Error"
+        status_msg = "ERROR"
         aws_functions.send_bpm_status(bpm_queue_url, module, status_msg, run_id)
 
     return error_message
